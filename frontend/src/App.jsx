@@ -228,11 +228,11 @@ function App() {
 
           <div className="row-inputs">
             <div className="input-box">
-              <label>Cód. Parceiro</label>
+              <label>Cód. Parceiro   </label>
               <input name="codParceiro" value={form.codParceiro} onChange={handleChange} placeholder="00000" onFocus={disableReadOnly} readOnly />
             </div>
             <div className="input-box">
-              <label>Contato</label>
+              <label>Contato   </label>
               <input name="contato" value={form.contato} onChange={handleChange} placeholder="(00) 00000-0000" onFocus={disableReadOnly} readOnly />
             </div>
           </div>

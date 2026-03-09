@@ -1,12 +1,17 @@
 /* --- VARIÁVEIS GLOBAIS (Tema Cyberpunk/Dark) --- */
 :root {
-  --bg-color: #1a1d23;
-  --card-bg: #242933;
-  --input-bg: #2e3440;
-  --text-main: #eceff4;
-  --text-dim: #9ca3af;
-  --accent: #00f2ff;
-  --accent-hover: #00c8d4;
+  /* Fundo geral agora é um chumbo profundo, não mais preto */
+  --bg-color: #1e222a;
+  /* O card ganha um tom acinzentado azulado para descolar do fundo */
+  --card-bg: #282c34;
+  /* O input é escuro o suficiente para dar contraste, mas sem ser breu */
+  --input-bg: #181a1f; 
+  --text-main: #f0f4f8;
+  --text-dim: #9aa5b1;
+  --accent: #00e5ff;
+  --accent-hover: #0bc4d9;
+  /* O verde neon mantido para destacar o contato perfeitamente */
+  --contact-color: #39ff14; 
   --danger: #ff5f5f;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -44,7 +49,7 @@ body {
 /* --- HEADER --- */
 header {
   margin-bottom: 15px;
-  border-bottom: 1px solid #3b4252;
+  border-bottom: 1px solid #3e4451;
   padding-bottom: 12px;
   flex-shrink: 0;
 }
@@ -64,14 +69,14 @@ header h1 {
 
 .hora {
   display: inline-block;
-  background: rgba(0, 242, 255, 0.1);
+  background: rgba(0, 229, 255, 0.1);
   color: var(--accent);
   padding: 3px 10px;
   border-radius: 6px;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
   font-size: 0.85rem;
-  border: 1px solid rgba(0, 242, 255, 0.3);
+  border: 1px solid rgba(0, 229, 255, 0.3);
 }
 
 /* --- SUB-DASHBOARD (RECOLHÍVEL) --- */
@@ -127,7 +132,7 @@ header h1 {
   flex: 1;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -156,9 +161,11 @@ header h1 {
 }
 
 /* --- BOTÕES GERAIS --- */
-.btn-dash-trigger, .btn-refresh, .btn-open-export {
+.btn-dash-trigger, 
+.btn-refresh, 
+.btn-open-export {
   background: rgba(236, 239, 244, 0.05);
-  border: 1px solid #3b4252;
+  border: 1px solid #3e4451;
   color: var(--text-dim);
   border-radius: 8px;
   cursor: pointer;
@@ -168,7 +175,8 @@ header h1 {
   justify-content: center;
 }
 
-.btn-dash-trigger, .btn-refresh {
+.btn-dash-trigger, 
+.btn-refresh {
   width: 38px;
   height: 38px;
   font-size: 1.1rem;
@@ -180,8 +188,10 @@ header h1 {
   font-size: 0.8rem;
 }
 
-.btn-dash-trigger:hover, .btn-refresh:hover, .btn-open-export:hover {
-  background: rgba(0, 242, 255, 0.1);
+.btn-dash-trigger:hover, 
+.btn-refresh:hover, 
+.btn-open-export:hover {
+  background: rgba(0, 229, 255, 0.1);
   color: var(--accent);
   border-color: var(--accent);
 }
@@ -204,24 +214,42 @@ header h1 {
 
 .row-inputs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1.2fr;
   gap: 12px;
 }
 
+/* Ajustes gerais de Input */
 input {
   background: var(--input-bg);
-  border: 1px solid #3b4252;
-  padding: 10px 14px;
+  border: 2px solid #3e4451;
+  padding: 12px 14px;
   border-radius: 8px;
-  color: #fff;
-  font-size: 0.9rem;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
   transition: var(--transition);
 }
 
 input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(0, 242, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.15);
+}
+
+/* --- DESTAQUE ESPECÍFICO: CONTATO --- */
+input[placeholder*="Contato"], 
+input[placeholder*="CONTATO"],
+.input-contato {
+  color: var(--contact-color);
+  font-size: 1.1rem;
+  border-color: rgba(57, 255, 20, 0.4);
+}
+
+input[placeholder*="Contato"]:focus, 
+input[placeholder*="CONTATO"]:focus,
+.input-contato:focus {
+  border-color: var(--contact-color);
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
 }
 
 /* --- SEÇÃO DE ITENS (SCROLL) --- */
@@ -239,13 +267,25 @@ input:focus {
 
 .item-input-group {
   display: grid;
-  grid-template-columns: 70px 100px 1fr 50px;
+  grid-template-columns: 100px 100px 1fr 50px; 
   gap: 10px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.15);
   padding: 10px;
   border-radius: 12px;
   margin-bottom: 10px;
   flex-shrink: 0;
+}
+
+/* --- DESTAQUE ESPECÍFICO: CÓDIGO DO PRODUTO (INPUT) --- */
+.item-input-group input[placeholder*="CÓD"],
+.item-input-group input[placeholder*="Cód"],
+.input-cod {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  font-size: 1.15rem;
+  text-align: center;
+  font-weight: 800;
+  border-color: rgba(0, 229, 255, 0.4);
 }
 
 .lista-itens {
@@ -256,22 +296,64 @@ input:focus {
 
 .item-card {
   background: var(--input-bg);
-  padding: 10px 14px;
+  padding: 12px 14px;
   border-radius: 10px;
   display: grid;
-  grid-template-columns: 80px 1fr 50px 30px;
+  grid-template-columns: 100px 1fr 50px 30px;
   gap: 12px;
   align-items: center;
-  border-left: 3px solid var(--accent);
-  margin-bottom: 6px;
+  border-left: 4px solid var(--accent);
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.item-cod-text { font-family: monospace; color: var(--accent); font-weight: bold; }
-.item-desc-text { font-size: 0.85rem; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.item-tag { background: rgba(236, 239, 244, 0.08); padding: 3px 6px; border-radius: 4px; font-size: 0.7rem; text-align: center; }
+/* --- DESTAQUE ESPECÍFICO: CÓDIGO DO PRODUTO (LISTA) --- */
+.item-cod-text { 
+  font-family: 'JetBrains Mono', monospace; 
+  color: var(--accent); 
+  font-weight: 900; 
+  font-size: 1.1rem;
+  background: rgba(0, 229, 255, 0.1);
+  padding: 6px 8px;
+  border-radius: 6px;
+  text-align: center;
+  border: 1px solid rgba(0, 229, 255, 0.2);
+}
 
-.btn-add { background: var(--accent); border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-.btn-remover { background: transparent; border: none; color: var(--danger); cursor: pointer; font-size: 1.2rem; }
+.item-desc-text { 
+  font-size: 0.95rem; 
+  text-transform: uppercase; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  font-weight: 600;
+}
+
+.item-tag { 
+  background: rgba(236, 239, 244, 0.1); 
+  padding: 4px 8px; 
+  border-radius: 6px; 
+  font-size: 0.8rem; 
+  text-align: center; 
+  font-weight: bold;
+}
+
+.btn-add { 
+  background: var(--accent); 
+  border: none; 
+  border-radius: 8px; 
+  font-weight: bold; 
+  cursor: pointer; 
+  font-size: 1.1rem;
+}
+
+.btn-remover { 
+  background: transparent; 
+  border: none; 
+  color: var(--danger); 
+  cursor: pointer; 
+  font-size: 1.4rem; 
+}
 
 .btn-registrar {
   width: 100%;
@@ -281,19 +363,26 @@ input:focus {
   border: 2px solid var(--accent);
   color: var(--accent);
   border-radius: 10px;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 1.05rem;
   text-transform: uppercase;
   cursor: pointer;
   flex-shrink: 0;
+  transition: var(--transition);
 }
 
-.btn-registrar:hover { background: var(--accent); color: #000; }
+.btn-registrar:hover { 
+  background: var(--accent); 
+  color: #000; 
+}
 
 /* --- MODAIS E POPUPS (TABELA) --- */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
   background: rgba(10, 12, 16, 0.85);
   display: flex;
   justify-content: center;
@@ -308,19 +397,21 @@ input:focus {
   border-radius: 16px;
   width: 100%;
   max-width: 480px;
-  border: 1px solid #3b4252;
+  border: 1px solid #3e4451;
   box-shadow: 0 20px 40px rgba(0,0,0,0.6);
 }
 
-.popup-15dias { border-top: 6px solid var(--accent) !important; }
+.popup-15dias { 
+  border-top: 6px solid var(--accent) !important; 
+}
 
 .popup-scroll-area {
   max-height: 300px;
   overflow-y: auto;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 12px;
   margin-bottom: 20px;
-  border: 1px solid #3b4252;
+  border: 1px solid #3e4451;
 }
 
 .popup-table {
@@ -331,23 +422,36 @@ input:focus {
 .popup-table thead th {
   position: sticky;
   top: 0;
-  background: #2e3440;
+  background: #282c34;
   color: var(--accent);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   padding: 12px 8px;
   text-align: left;
-  border-bottom: 2px solid #3b4252;
+  border-bottom: 2px solid #3e4451;
 }
 
 .popup-table tbody td {
   padding: 10px 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
-.col-qty { color: var(--accent); font-weight: bold; width: 45px; }
-.col-desc { color: var(--text-main); text-transform: uppercase; }
-.col-cod { color: var(--text-dim); font-family: monospace; font-size: 0.75rem; }
+.col-qty { 
+  color: var(--accent); 
+  font-weight: bold; 
+  width: 45px; 
+}
+
+.col-desc { 
+  color: var(--text-main); 
+  text-transform: uppercase; 
+}
+
+.col-cod { 
+  color: var(--text-dim); 
+  font-family: 'JetBrains Mono', monospace; 
+  font-size: 0.85rem; 
+}
 
 .btn-entendido {
   width: 100%;
@@ -357,19 +461,44 @@ input:focus {
   border: none;
   border-radius: 8px;
   font-weight: 800;
+  font-size: 1rem;
   cursor: pointer;
 }
 
 /* --- SCROLLBARS --- */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #3b4252; border-radius: 10px; }
-.popup-scroll-area::-webkit-scrollbar-thumb { background: var(--accent); }
+::-webkit-scrollbar { 
+  width: 6px; 
+}
+
+::-webkit-scrollbar-track { 
+  background: transparent; 
+}
+
+::-webkit-scrollbar-thumb { 
+  background: #3e4451; 
+  border-radius: 10px; 
+}
+
+.popup-scroll-area::-webkit-scrollbar-thumb { 
+  background: var(--accent); 
+}
 
 /* --- RESPONSIVIDADE --- */
 @media (max-width: 650px) {
-  .item-input-group { grid-template-columns: 1fr 1fr; }
-  .item-card { grid-template-columns: 1fr 1fr 40px; }
-  .item-cod-text { display: none; }
-  body { overflow-y: auto; height: auto; }
+  .item-input-group { 
+    grid-template-columns: 1fr 1fr; 
+  }
+  
+  .item-card { 
+    grid-template-columns: 1fr 1fr 40px; 
+  }
+  
+  .item-cod-text { 
+    display: none; 
+  }
+  
+  body { 
+    overflow-y: auto; 
+    height: auto; 
+  }
 }
