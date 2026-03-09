@@ -307,7 +307,7 @@ function App() {
 
 <header>
   <div className="header-top">
-    <h1>Controle de Peças</h1>
+    <h1>Peças Faltantes</h1>
     <div style={{ display: 'flex', gap: '10px' }}>
       {/* Botão agora com classe e alinhado */}
       <button 
