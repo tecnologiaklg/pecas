@@ -262,12 +262,12 @@ input:focus {
   body { overflow-y: auto; height: auto; }
 }
 
-/* --- Modal de Exportação Ajustado --- */
-.modal-overlay {
+/* --- Modal do Mini Dash --- */
+.modal-overlay.dash {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(10, 12, 16, 0.85);
+  background: rgba(10, 12, 16, 0.85); /* Mais escuro para destacar o dash */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -276,41 +276,276 @@ input:focus {
   padding: 20px;
 }
 
-.modal-content {
-  background: var(--card-bg);
+.modal-content.dash-popup {
+  background: var(--card-bg); /* Fundo escuro */
   padding: 24px;
   border-radius: 16px;
-  width: 100%;
-  max-width: 400px;
+  max-width: 600px;
+  width: 95%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
   border: 1px solid #3b4252;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-  animation: modalEntrada 0.3s ease-out;
 }
 
-@keyframes modalEntrada {
-  from { opacity: 0; transform: translateY(20px); }
+.dash-header h2 {
+  font-size: 1.2rem;
+  color: var(--accent);
+  margin: 0;
+}
+
+.dash-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 15px 0;
+}
+
+.dash-tabs button {
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid #3b4252;
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: var(--transition);
+}
+
+.dash-tabs button:hover {
+  border-color: var(--accent);
+  color: var(--text-main);
+}
+
+.dash-tabs button.active {
+  background: rgba(0, 242, 255, 0.1);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.lista-itens-dash {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-card-dash {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.2); /* Sutilmente mais escuro que o fundo */
+  color: var(--text-main);
+  font-size: 0.85rem;
+  align-items: center;
+  border-left: 4px solid var(--accent);
+}
+
+.item-card-dash span {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Botão que aciona o Mini Dash */
+.btn-dash-trigger {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-dash-trigger:hover {
+  background: rgba(0, 242, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.btn-dash-trigger svg {
+  width: 16px;
+  height: 16px;
+}
+@media (max-width: 500px) {
+  .modal-content.dash-popup {
+    padding: 16px;
+    width: 100%;
+  }
+
+  .item-card-dash {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide em duas colunas no celular */
+    gap: 5px;
+  }
+
+  .item-card-dash span:first-child {
+    font-weight: bold;
+    color: var(--accent);
+  }
+}
+/* Estilo do Botão Mini Dash */
+.btn-mini-dash {
+  background: rgba(236, 239, 244, 0.05); /* Fundo sutil */
+  color: var(--text-dim);
+  border: 1px solid #3b4252;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content; /* Impede que o botão estique 100% */
+}
+
+.btn-mini-dash:hover {
+  background: rgba(0, 242, 255, 0.1);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Ajuste no Modal do Dash para não vir branco */
+.modal-content.dash-popup {
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid #3b4252;
+}
+
+.dash-header h3 {
+  color: var(--accent);
+  margin: 0;
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+/* Overlay que escurece o fundo */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px); /* Efeito de desfoque no fundo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Card do Dash */
+.dash-popup {
+  background: var(--card-bg);
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+  width: 90%;
+  max-width: 500px;
+  border-radius: 16px;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.modal-content h3 {
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 1.1rem;
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #3b4252;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.dash-header h3 {
+  margin: 0;
   color: var(--accent);
-  text-align: center;
+  font-size: 1.1rem;
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Estilo das Abas dentro do Dash */
+.dash-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.dash-tabs button {
+  flex: 1;
+  background: var(--input-bg);
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.dash-tabs button.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(0, 242, 255, 0.1);
+}
+
+.resumo-tab li {
+  list-style: none;
+  padding: 8px;
+  background: rgba(0,0,0,0.2);
+  margin-bottom: 5px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Container para alinhar os botões lado a lado */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  width: 100%;
+  padding: 20px;
 }
 
 .modal-inputs {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-bottom: 25px;
+  gap: 15px; /* Espaço vertical entre os blocos de data */
+  margin-bottom: 25px; /* Espaço antes de começar os botões */
 }
 
 .modal-inputs label {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px; /* Espaço entre o texto "Data Inicial" e o campo de input */
   color: var(--text-dim);
   font-size: 0.75rem;
   font-weight: 700;
@@ -318,44 +553,36 @@ input:focus {
 }
 
 .modal-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  display: flex;
+  gap: 12px; /* Espaço horizontal entre os botões */
+  width: 100%;
 }
 
-.btn-cancelar {
-  background: rgba(255, 95, 95, 0.1);
-  color: var(--danger);
-  border: 1px solid var(--danger);
+.modal-actions button {
+  flex: 1; /* Faz os dois botões terem o mesmo tamanho */
   padding: 12px;
   border-radius: 8px;
+  font-weight: 700;
   cursor: pointer;
-  font-weight: 600;
   transition: var(--transition);
 }
 
-.btn-cancelar:hover {
-  background: var(--danger);
-  color: #fff;
+/* Botão Cancelar: Discreto e integrado ao fundo */
+.btn-cancelar {
+  background: rgba(76, 86, 106, 0.1);
+  color: var(--text-dim);
+  border: 1px solid #3b4252;
 }
 
+/* Botão de Ação: Destaque Ciano (Accent) */
 .btn-baixar {
   background: var(--accent);
-  color: #000;
+  color: #1a1d23; /* Texto escuro no fundo claro */
   border: none;
-  padding: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(0, 242, 255, 0.2);
 }
 
 .btn-baixar:hover {
   background: var(--accent-hover);
   transform: translateY(-2px);
-}
-
-.btn-baixar:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }

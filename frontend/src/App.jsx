@@ -6,7 +6,12 @@ function App() {
   const [hora, setHora] = useState(new Date());
   const [loading, setLoading] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
-  
+  const [showDashPopup, setShowDashPopup] = useState(false);
+  const [activeTab, setActiveTab] = useState("resumo"); // "resumo" ou "itens"
+  const [dashData, setDashData] = useState({ totalAtendimentos: 0, porVendedor: [] });
+  const [ultimosItens, setUltimosItens] = useState([]);
+  const [loadingDash, setLoadingDash] = useState(false);
+    
   const [dataInicio, setDataInicio] = useState(new Date().toISOString().split('T')[0]);
   const [dataFim, setDataFim] = useState(new Date().toISOString().split('T')[0]);
 
@@ -69,6 +74,57 @@ function App() {
     setForm({ ...form, [name]: valorFormatado });
   }
 
+ async function carregarDash() {
+  setLoadingDash(true);
+  try {
+    const trintaDias = new Date();
+    trintaDias.setDate(trintaDias.getDate() - 30);
+    const dataBusca = trintaDias.toISOString();
+
+    // Busca os itens vinculados às conversas dos últimos 30 dias
+    const { data: itensData, error: errItens } = await supabase
+      .from('itens_faltantes')
+      .select(`
+        quantidade, 
+        descricao, 
+        cod_prod, 
+        conversas!inner (vendedor, dt_inclusao)
+      `)
+      .gte('conversas.dt_inclusao', dataBusca);
+
+    if (errItens) throw errItens;
+
+    // Processamento de dados
+    const statsVendedores = itensData.reduce((acc, item) => {
+      const nome = item.conversas.vendedor;
+      if (!acc[nome]) {
+        acc[nome] = { atendimentos: new Set(), totalPeças: 0 };
+      }
+      // Usamos Set para contar atendimentos únicos (conversas)
+      acc[nome].atendimentos.add(item.descricao + item.conversas.dt_inclusao); 
+      acc[nome].totalPeças += parseInt(item.quantidade || 0);
+      return acc;
+    }, {});
+
+    // Formata para o estado
+    const listaVendedores = Object.entries(statsVendedores).map(([nome, dados]) => ({
+      nome,
+      atendimentos: dados.atendimentos.size,
+      pecas: dados.totalPeças
+    }));
+
+    setDashData({ 
+      totalAtendimentos: new Set(itensData.map(i => i.conversas.dt_inclusao)).size, 
+      porVendedor: listaVendedores 
+    });
+    setUltimosItens(itensData);
+
+  } catch (error) {
+    alert("Erro ao carregar dash: " + error.message);
+  } finally {
+    setLoadingDash(false);
+  }
+}
   function handleItemChange(e) {
     const { name, value } = e.target;
     let valorFormatado = (name === "cod_prod") 
@@ -173,15 +229,103 @@ function App() {
       setLoading(false);
     }
   }
+
+  
   return (
     <div className="container">
-      <header>
-        <div className="header-top">
-          <h1>Controle de Peças</h1>
-          <button className="btn-open-export" onClick={() => setShowExportModal(true)}>📊 Exportar</button>
+      {/* Popup do Mini Dash */}
+      {showDashPopup && (
+        <div className="modal-overlay">
+          <div className="modal-content dash-popup">
+            <div className="dash-header">
+              <h3>Mini Dash - Últimos 30 dias</h3>
+              <button className="btn-close" onClick={() => setShowDashPopup(false)}>×</button>
+            </div>
+
+            <div className="dash-tabs">
+              <button className={activeTab === "resumo" ? "active" : ""} onClick={() => setActiveTab("resumo")}>Resumo</button>
+              <button className={activeTab === "itens" ? "active" : ""} onClick={() => setActiveTab("itens")}>Itens Faltantes</button>
+            </div>
+
+            <div className="dash-body">
+              {loadingDash ? (
+                <div className="loading-container">
+                  <p>Carregando dados do Supabase...</p>
+                </div>
+              ) : activeTab === "resumo" ? (
+                <div className="resumo-tab">
+                  <div className="resumo-header-cards">
+                    <p><strong>Total de Atendimentos:</strong> {dashData.totalAtendimentos}</p>
+                  </div>
+
+                  <h4>Ranking por Vendedor:</h4>
+                  <div className="lista-vendedores-dash">
+                    {/* Ordenando por quem vendeu mais peças */}
+                    {dashData.porVendedor
+                      .sort((a, b) => b.pecas - a.pecas)
+                      .map((vendedorObj, idx) => (
+                        <div key={idx} className="item-card-dash vendedor-stats">
+                          <span className="nome-vendedor">{vendedorObj.nome}</span>
+                          <div className="vendedor-metrias">
+                            <div className="badge badge-atend">
+                              <span className="badge-icon">📞</span>
+                              <span className="badge-value">{vendedorObj.atendimentos}</span>
+                              <span className="badge-label"> Atendimentos</span>
+                            </div>
+                            <div className="badge badge-pecas">
+                              <span className="badge-icon">⚙️</span>
+                              <span className="badge-value">{vendedorObj.pecas}</span>
+                              <span className="badge-label"> Peças</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="itens-tab">
+                  <h4>Itens Faltantes (Últimos 30 dias)</h4>
+                  <div className="lista-itens-dash">
+                    {ultimosItens.length > 0 ? (
+                      ultimosItens.map((item, i) => (
+                        <div key={i} className="item-card-dash">
+                          <span className="item-cod-text">{item.cod_prod || "---"}</span>
+                          <span className="item-desc-text">{item.descricao}</span>
+                          <span className="item-tag-qty">{item.quantidade}x</span>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="no-data">Nenhum item registrado nos últimos 30 dias.</p>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="hora">{hora.toLocaleTimeString()}</div>
-      </header>
+      )}
+
+<header>
+  <div className="header-top">
+    <h1>Controle de Peças</h1>
+    <div style={{ display: 'flex', gap: '10px' }}>
+      {/* Botão agora com classe e alinhado */}
+      <button 
+        className="btn-mini-dash" 
+        onClick={() => {
+          carregarDash(); // Busca os dados no Supabase
+          setShowDashPopup(true); // Abre o popup
+        }}
+      >
+        📊 Mini Dash
+      </button>
+      <button className="btn-open-export" onClick={() => setShowExportModal(true)}>
+        📊 Exportar
+      </button>
+    </div>
+  </div>
+  <div className="hora">{hora.toLocaleTimeString()}</div>
+</header>
 
             {showExportModal && (
         <div className="modal-overlay">
