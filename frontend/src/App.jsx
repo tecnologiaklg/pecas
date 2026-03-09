@@ -154,7 +154,7 @@ function App() {
         .insert([{ 
           vendedor: form.funcionario, 
           cliente: form.cliente, 
-          codparceiro: parseInt(form.codParceiro), 
+          codparceiro: form.codParceiro ? parseInt(form.codParceiro) : null,
           contato: form.contato,
           url: form.link 
         }])
