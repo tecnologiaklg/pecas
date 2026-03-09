@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
-import SubDashPorPeriodo from "./SubDashPorPeriodo";
 import "./App.css";
 
 function App() {
@@ -175,15 +174,10 @@ function App() {
     }
   }
   return (
-
-    
     <div className="container">
-
-      <SubDashPorPeriodo />
-
       <header>
         <div className="header-top">
-          <h1>Controle de Peças Faltantes</h1>
+          <h1>Controle de Peças</h1>
           <button className="btn-open-export" onClick={() => setShowExportModal(true)}>📊 Exportar</button>
         </div>
         <div className="hora">{hora.toLocaleTimeString()}</div>
@@ -228,11 +222,11 @@ function App() {
 
           <div className="row-inputs">
             <div className="input-box">
-              <label>Cód. Parceiro   </label>
+              <label>Cód. Parceiro</label>
               <input name="codParceiro" value={form.codParceiro} onChange={handleChange} placeholder="00000" onFocus={disableReadOnly} readOnly />
             </div>
             <div className="input-box">
-              <label>Contato   </label>
+              <label>Contato</label>
               <input name="contato" value={form.contato} onChange={handleChange} placeholder="(00) 00000-0000" onFocus={disableReadOnly} readOnly />
             </div>
           </div>
