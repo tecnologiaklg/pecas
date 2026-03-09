@@ -141,7 +141,7 @@ function App() {
   }
 
   async function registrar() {
-    if (!form.funcionario.trim() || !form.cliente.trim() || !form.codParceiro.trim()) {
+    if (!form.funcionario.trim() || !form.cliente.trim()) {
       return alert("Preencha os campos obrigatórios do cabeçalho.");
     }
     if (itens.length === 0) return alert("Adicione pelo menos um item.");
