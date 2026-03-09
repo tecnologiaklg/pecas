@@ -1,3 +1,4 @@
+/* --- Variáveis Globais --- */
 :root {
   --bg-color: #1a1d23;
   --card-bg: #242933;
@@ -10,6 +11,7 @@
   --transition: all 0.2s ease;
 }
 
+/* --- Reset e Base --- */
 * {
   box-sizing: border-box;
 }
@@ -22,21 +24,21 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Ocupa exatamente a altura da tela */
+  height: 100vh;
   padding: 15px;
-  overflow: hidden; /* Impede scroll na página inteira */
+  overflow: hidden;
 }
 
 .container {
   background-color: var(--card-bg);
   width: 100%;
   max-width: 850px;
-  max-height: 98vh; /* Limita a altura do card */
+  max-height: 98vh;
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   display: flex;
-  flex-direction: column; /* Organiza os blocos verticalmente */
+  flex-direction: column;
 }
 
 /* --- Header --- */
@@ -44,7 +46,7 @@ header {
   margin-bottom: 15px;
   border-bottom: 1px solid #3b4252;
   padding-bottom: 12px;
-  flex-shrink: 0; /* Não deixa o header diminuir */
+  flex-shrink: 0;
 }
 
 .header-top {
@@ -60,18 +62,6 @@ header h1 {
   letter-spacing: -0.5px;
 }
 
-.btn-open-export {
-  background: rgba(236, 239, 244, 0.05);
-  color: var(--text-dim);
-  border: 1px solid #3b4252;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.8rem;
-  transition: var(--transition);
-}
-
 .hora {
   display: inline-block;
   background: rgba(0, 242, 255, 0.1);
@@ -84,7 +74,83 @@ header h1 {
   border: 1px solid rgba(0, 242, 255, 0.3);
 }
 
-/* --- Formulário Principal --- */
+/* --- Dashboard Superior --- */
+.sub-dash-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.dash-card {
+  background: var(--input-bg);
+  border-left: 4px solid var(--accent);
+  padding: 12px 16px;
+  border-radius: 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dash-card.highlighted {
+  border-left-color: var(--danger);
+}
+
+.dash-label {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.dash-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-main);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.dash-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-dash-trigger, .btn-refresh, .btn-open-export {
+  background: rgba(236, 239, 244, 0.05);
+  border: 1px solid #3b4252;
+  color: var(--text-dim);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-dash-trigger, .btn-refresh {
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+}
+
+.btn-open-export {
+  padding: 6px 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.btn-dash-trigger:hover, .btn-refresh:hover, .btn-open-export:hover {
+  background: rgba(0, 242, 255, 0.1);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* --- Formulários e Inputs --- */
 .formulario {
   display: flex;
   flex-direction: column;
@@ -124,12 +190,12 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(0, 242, 255, 0.1);
 }
 
-/* --- Seção de Itens (O miolo que pode scrollar) --- */
+/* --- Seção de Itens (Scroll Interno) --- */
 .secao-itens {
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Importante para o scroll interno funcionar */
-  flex-grow: 1; 
+  overflow: hidden;
+  flex-grow: 1;
 }
 
 .secao-itens h3 {
@@ -149,23 +215,10 @@ input:focus {
   flex-shrink: 0;
 }
 
-/* LISTA DE ITENS COM SCROLL */
 .lista-itens {
   overflow-y: auto;
   padding-right: 8px;
   flex-grow: 1;
-}
-
-/* Scrollbar Customizada */
-.lista-itens::-webkit-scrollbar {
-  width: 5px;
-}
-.lista-itens::-webkit-scrollbar-track {
-  background: transparent;
-}
-.lista-itens::-webkit-scrollbar-thumb {
-  background: #3b4252;
-  border-radius: 10px;
 }
 
 .item-card {
@@ -216,19 +269,6 @@ input:focus {
   transition: var(--transition);
 }
 
-.btn-add:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-}
-
-.btn-remover {
-  background: transparent;
-  border: none;
-  color: var(--danger);
-  font-size: 1.1rem;
-  cursor: pointer;
-}
-
 .btn-registrar {
   width: 100%;
   padding: 14px;
@@ -250,19 +290,15 @@ input:focus {
   color: #000;
 }
 
-/* Responsividade */
-@media (max-width: 650px) {
-  .item-input-group {
-    grid-template-columns: 1fr 1fr;
-  }
-  .item-card {
-    grid-template-columns: 1fr 1fr 40px;
-  }
-  .item-cod-text { display: none; } /* Esconde código em telas muito pequenas */
-  body { overflow-y: auto; height: auto; }
+.btn-remover {
+  background: transparent;
+  border: none;
+  color: var(--danger);
+  font-size: 1.1rem;
+  cursor: pointer;
 }
 
-/* --- Modal de Exportação Ajustado --- */
+/* --- Modais e Popups (Overlay) --- */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -281,7 +317,7 @@ input:focus {
   padding: 24px;
   border-radius: 16px;
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
   border: 1px solid #3b4252;
   box-shadow: 0 20px 40px rgba(0,0,0,0.6);
   animation: modalEntrada 0.3s ease-out;
@@ -292,70 +328,73 @@ input:focus {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.modal-content h3 {
-  margin-top: 0;
+/* --- Tabela do Popup 15 Dias --- */
+.popup-15dias {
+  border-top: 6px solid var(--accent) !important;
+}
+
+.popup-header h3 { color: var(--accent); text-transform: uppercase; margin-bottom: 5px; }
+.popup-header p { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 20px; }
+
+.popup-scroll-area {
+  max-height: 300px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px solid #3b4252;
   margin-bottom: 20px;
-  font-size: 1.1rem;
+}
+
+.popup-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.popup-table thead th {
+  position: sticky;
+  top: 0;
+  background: #2e3440;
   color: var(--accent);
-  text-align: center;
-}
-
-.modal-inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-.modal-inputs label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  color: var(--text-dim);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.7rem;
   text-transform: uppercase;
+  padding: 12px 8px;
+  text-align: left;
+  border-bottom: 2px solid #3b4252;
 }
 
-.modal-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+.popup-table tbody td {
+  padding: 10px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.85rem;
 }
 
-.btn-cancelar {
-  background: rgba(255, 95, 95, 0.1);
-  color: var(--danger);
-  border: 1px solid var(--danger);
+.col-qty { color: var(--accent); font-weight: bold; width: 50px; }
+.col-desc { color: var(--text-main); text-transform: uppercase; }
+.col-cod { color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; }
+
+.btn-entendido {
+  width: 100%;
   padding: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: var(--transition);
-}
-
-.btn-cancelar:hover {
-  background: var(--danger);
-  color: #fff;
-}
-
-.btn-baixar {
   background: var(--accent);
   color: #000;
   border: none;
-  padding: 12px;
   border-radius: 8px;
+  font-weight: 800;
   cursor: pointer;
-  font-weight: 700;
-  transition: var(--transition);
+  letter-spacing: 1px;
 }
 
-.btn-baixar:hover {
-  background: var(--accent-hover);
-  transform: translateY(-2px);
-}
+/* --- Scrollbars --- */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #3b4252; border-radius: 10px; }
+.popup-scroll-area::-webkit-scrollbar-thumb { background: var(--accent); }
 
-.btn-baixar:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+/* --- Responsividade --- */
+@media (max-width: 650px) {
+  .item-input-group { grid-template-columns: 1fr 1fr; }
+  .item-card { grid-template-columns: 1fr 1fr 40px; }
+  .item-cod-text { display: none; }
+  body { overflow-y: auto; height: auto; }
+  .sub-dash-container { flex-wrap: wrap; }
 }
