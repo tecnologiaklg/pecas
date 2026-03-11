@@ -2,10 +2,15 @@ import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 import "./App.css";
 
+import { useState, useEffect, useRef } from "react"; // Adicionado useRef
+
 function Combobox({ value, onChange, lista }) {
   const [open, setOpen] = useState(false);
   const [filtro, setFiltro] = useState(value || "");
-  const [selectedIndex, setSelectedIndex] = useState(0); // Estado para o índice selecionado
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  
+  const listRef = useRef(null); // Referência para a <ul>
+  const itemsRef = useRef([]); // Referência para os itens <li>
 
   useEffect(() => {
     setFiltro(value || "");
@@ -15,7 +20,16 @@ function Combobox({ value, onChange, lista }) {
     v.codigo.startsWith(filtro) || v.nome.toLowerCase().startsWith(filtro.toLowerCase())
   );
 
-  // Reseta o índice sempre que o filtro mudar para não ficar em um índice inexistente
+  // Garante que o scroll acompanhe a seleção das setas
+  useEffect(() => {
+    if (open && itemsRef.current[selectedIndex]) {
+      itemsRef.current[selectedIndex].scrollIntoView({
+        block: "nearest", // Move apenas o necessário para aparecer
+        behavior: "smooth"
+      });
+    }
+  }, [selectedIndex, open]);
+
   useEffect(() => {
     setSelectedIndex(0);
   }, [filtro]);
@@ -67,22 +81,27 @@ function Combobox({ value, onChange, lista }) {
       />
       
       {open && resultados.length > 0 && (
-        <ul className="options" style={{ 
-          position: 'absolute', 
-          zIndex: 1000, 
-          width: '100%', 
-          background: 'var(--input-bg)',
-          maxHeight: '200px', 
-          overflowY: 'auto',
-          border: '1px solid var(--accent)',
-          borderRadius: '8px',
-          padding: 0, 
-          margin: '5px 0 0 0',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
-        }}>
+        <ul 
+          className="options" 
+          ref={listRef} // Atribui a referência da lista
+          style={{ 
+            position: 'absolute', 
+            zIndex: 1000, 
+            width: '100%', 
+            background: 'var(--input-bg)',
+            maxHeight: '200px', 
+            overflowY: 'auto',
+            border: '1px solid var(--accent)',
+            borderRadius: '8px',
+            padding: 0, 
+            margin: '5px 0 0 0',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
+          }}
+        >
           {resultados.map((v, index) => (
             <li
               key={v.codigo}
+              ref={el => itemsRef.current[index] = el} // Atribui a referência de cada item
               onMouseDown={(e) => {
                 e.preventDefault(); 
                 selecionar(v);
@@ -92,7 +111,6 @@ function Combobox({ value, onChange, lista }) {
                 cursor: 'pointer', 
                 borderBottom: '1px solid rgba(255,255,255,0.1)',
                 color: 'var(--text-main)',
-                // Cor de destaque se for o índice selecionado pelas setas
                 backgroundColor: index === selectedIndex ? 'rgba(0, 242, 255, 0.2)' : 'transparent'
               }}
             >
