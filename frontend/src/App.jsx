@@ -531,7 +531,7 @@ function App() {
         <div className="item-input-group">
           <input className="input-qtd" type="number" min="1" value={novoItem.quantidade} onChange={(e) => setNovoItem({ ...novoItem, quantidade: e.target.value })} />
           <input className="input-cod" name="cod_prod" placeholder="Código" value={novoItem.cod_prod} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
-          <input className="input-desc" name="descricao" placeholder="Descrição" value={novoItem.descricao} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
+          <input className="input-desc" name="descricao" placeholder="Descrição (obrigatório)" value={novoItem.descricao} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
           <button className="btn-add" onClick={addItem}>+</button>
         </div>
 
