@@ -526,26 +526,18 @@ input:focus {
   justify-content: space-between;
 }
 
-/* Container para alinhar os botões lado a lado */
-.modal-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-  width: 100%;
-  padding: 20px;
-}
-
+/* --- Modal Inputs e Ações --- */
 .modal-inputs {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Espaço vertical entre os blocos de data */
-  margin-bottom: 25px; /* Espaço antes de começar os botões */
+  gap: 15px; /* Espaço vertical entre os blocos de input */
+  margin-bottom: 20px; /* Espaço antes dos botões */
 }
 
 .modal-inputs label {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Espaço entre o texto "Data Inicial" e o campo de input */
+  gap: 5px; /* Espaço entre o texto e o input */
   color: var(--text-dim);
   font-size: 0.75rem;
   font-weight: 700;
@@ -559,7 +551,7 @@ input:focus {
 }
 
 .modal-actions button {
-  flex: 1; /* Faz os dois botões terem o mesmo tamanho */
+  flex: 1; /* Faz os botões terem largura igual */
   padding: 12px;
   border-radius: 8px;
   font-weight: 700;
@@ -567,17 +559,17 @@ input:focus {
   transition: var(--transition);
 }
 
-/* Botão Cancelar: Discreto e integrado ao fundo */
+/* Botão Cancelar */
 .btn-cancelar {
   background: rgba(76, 86, 106, 0.1);
   color: var(--text-dim);
   border: 1px solid #3b4252;
 }
 
-/* Botão de Ação: Destaque Ciano (Accent) */
+/* Botão de Ação: Baixar CSV / Accent */
 .btn-baixar {
   background: var(--accent);
-  color: #1a1d23; /* Texto escuro no fundo claro */
+  color: #1a1d23;
   border: none;
   box-shadow: 0 4px 15px rgba(0, 242, 255, 0.2);
 }
@@ -585,4 +577,104 @@ input:focus {
 .btn-baixar:hover {
   background: var(--accent-hover);
   transform: translateY(-2px);
+}
+
+/* Responsividade */
+@media (max-width: 500px) {
+  .modal-inputs {
+    gap: 10px;
+  }
+  .modal-actions {
+    flex-direction: column; /* Botões empilhados em telas pequenas */
+    gap: 10px;
+  }
+}
+
+/* --- Estilos do Combobox --- */
+.custom-combobox {
+  width: 100%;
+}
+
+.custom-combobox input {
+  width: 100%;
+  cursor: text;
+}
+
+/* Lista de sugestões que aparece ao digitar */
+.custom-combobox ul.options {
+  position: absolute;
+  top: calc(100% + 5px); /* Espaço logo abaixo do input */
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: var(--input-bg); /* Fundo igual aos inputs */
+  border: 1px solid var(--accent); /* Borda com a cor de destaque */
+  border-radius: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Item individual da lista */
+.custom-combobox ul.options li {
+  padding: 12px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: var(--transition);
+}
+
+.custom-combobox ul.options li:last-child {
+  border-bottom: none;
+}
+
+.custom-combobox ul.options li:hover {
+  background: rgba(0, 242, 255, 0.1); /* Fundo sutil ao passar o mouse */
+}
+
+.custom-combobox ul.options li strong {
+  color: var(--accent); /* Código do vendedor em destaque */
+  margin-right: 8px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Customização da scrollbar da lista do combobox */
+.custom-combobox ul.options::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-combobox ul.options::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+/* --- Ajuste de Badge no Dashboard --- */
+.vendedor-metrias {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge-atend {
+  background: rgba(0, 242, 255, 0.1);
+  color: var(--accent);
+}
+
+.badge-pecas {
+  background: rgba(236, 239, 244, 0.05);
+  color: var(--text-dim);
 }

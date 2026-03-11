@@ -2,6 +2,109 @@ import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 import "./App.css";
 
+function Combobox({ value, onChange, lista }) {
+  const [open, setOpen] = useState(false);
+  const [filtro, setFiltro] = useState(value || "");
+  const [selectedIndex, setSelectedIndex] = useState(0); // Estado para o índice selecionado
+
+  useEffect(() => {
+    setFiltro(value || "");
+  }, [value]);
+
+  const resultados = lista.filter(v =>
+    v.codigo.startsWith(filtro) || v.nome.toLowerCase().startsWith(filtro.toLowerCase())
+  );
+
+  // Reseta o índice sempre que o filtro mudar para não ficar em um índice inexistente
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [filtro]);
+
+  const selecionar = (vendedor) => {
+    setFiltro(vendedor.nome);
+    onChange(vendedor.nome, vendedor.codigo);
+    setOpen(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (!open) {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") setOpen(true);
+      return;
+    }
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev < resultados.length - 1 ? prev + 1 : prev));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev > 0 ? prev - 1 : 0));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (resultados.length > 0) {
+        selecionar(resultados[selectedIndex]);
+      }
+    } else if (e.key === "Escape") {
+      setOpen(false);
+    }
+  };
+
+  return (
+    <div className="custom-combobox" style={{ position: 'relative' }}>
+      <input
+        type="text"
+        placeholder="Digite código ou nome"
+        value={filtro}
+        onKeyDown={handleKeyDown}
+        onChange={(e) => {
+          setFiltro(e.target.value);
+          setOpen(true);
+          if (e.target.value === "") onChange("", "");
+        }}
+        onFocus={() => setOpen(true)}
+        onBlur={() => {
+          setTimeout(() => setOpen(false), 200);
+        }}
+      />
+      
+      {open && resultados.length > 0 && (
+        <ul className="options" style={{ 
+          position: 'absolute', 
+          zIndex: 1000, 
+          width: '100%', 
+          background: 'var(--input-bg)',
+          maxHeight: '200px', 
+          overflowY: 'auto',
+          border: '1px solid var(--accent)',
+          borderRadius: '8px',
+          padding: 0, 
+          margin: '5px 0 0 0',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
+        }}>
+          {resultados.map((v, index) => (
+            <li
+              key={v.codigo}
+              onMouseDown={(e) => {
+                e.preventDefault(); 
+                selecionar(v);
+              }}
+              style={{ 
+                padding: '10px', 
+                cursor: 'pointer', 
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                color: 'var(--text-main)',
+                // Cor de destaque se for o índice selecionado pelas setas
+                backgroundColor: index === selectedIndex ? 'rgba(0, 242, 255, 0.2)' : 'transparent'
+              }}
+            >
+              <strong style={{ color: 'var(--accent)' }}>{v.codigo}</strong> - {v.nome}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 function App() {
   const [hora, setHora] = useState(new Date());
   const [loading, setLoading] = useState(false);
@@ -23,11 +126,32 @@ function App() {
     link: "" 
   });
 
+  const buscarFuncionario = (input) => {
+  input = input.trim().toLowerCase();
+
+  // Sugestões pelo código ou pelo nome
+  return vendedoresLista.filter(v => 
+    v.codigo.startsWith(input) || v.nome.toLowerCase().startsWith(input)
+  );
+};
+
   const [novoItem, setNovoItem] = useState({
     descricao: "",
     quantidade: 1,
     cod_prod: "" 
   });
+
+  const vendedoresLista = [
+  { codigo: "31", nome: "Larissa" },
+  { codigo: "55", nome: "Junior" },
+  { codigo: "140", nome: "Duda" },
+  { codigo: "152", nome: "Weny" },
+  { codigo: "154", nome: "João" },
+  { codigo: "155", nome: "Bryan" },
+  { codigo: "156", nome: "Ana Paula" },
+  { codigo: "157", nome: "Alexandre" },
+  { codigo: "158", nome: "Pedro" },
+];
 
   const [itens, setItens] = useState([]);
 
@@ -358,20 +482,23 @@ function App() {
 
       <section className="secao-dados">
         <form className="formulario" autoComplete="off">
-          <label>Funcionário</label>
-          <input name="funcionario" value={form.funcionario} onChange={handleChange} placeholder="NOME VENDEDOR" onFocus={disableReadOnly} readOnly />
-          
+       <label>Funcionário</label>
+        <Combobox
+          value={form.funcionario} // Importante para o reset funcionar
+          onChange={(nome, codigo) => setForm({ ...form, funcionario: nome, cod_func: codigo })}
+          lista={vendedoresLista}
+        />
           <label>Cliente</label>
-          <input name="cliente" value={form.cliente} onChange={handleChange} placeholder="NOME CLIENTE" onFocus={disableReadOnly} readOnly />
+          <input name="cliente" value={form.cliente} onChange={handleChange} placeholder="Cliente" onFocus={disableReadOnly} readOnly />
 
           <div className="row-inputs">
             <div className="input-box">
               <label>Cód. Parceiro</label>
-              <input name="codParceiro" value={form.codParceiro} onChange={handleChange} placeholder="00000" onFocus={disableReadOnly} readOnly />
+              <input name="codParceiro" value={form.codParceiro} onChange={handleChange} placeholder="12345" onFocus={disableReadOnly} readOnly />
             </div>
             <div className="input-box">
               <label>Contato</label>
-              <input name="contato" value={form.contato} onChange={handleChange} placeholder="(00) 00000-0000" onFocus={disableReadOnly} readOnly />
+              <input name="contato" value={form.contato} onChange={handleChange} placeholder="(12) 34567-8901" onFocus={disableReadOnly} readOnly />
             </div>
           </div>
 
@@ -384,8 +511,8 @@ function App() {
         <h3>Itens Faltantes</h3>
         <div className="item-input-group">
           <input className="input-qtd" type="number" min="1" value={novoItem.quantidade} onChange={(e) => setNovoItem({ ...novoItem, quantidade: e.target.value })} />
-          <input className="input-cod" name="cod_prod" placeholder="CÓD" value={novoItem.cod_prod} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
-          <input className="input-desc" name="descricao" placeholder="DESCRIÇÃO" value={novoItem.descricao} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
+          <input className="input-cod" name="cod_prod" placeholder="Código" value={novoItem.cod_prod} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
+          <input className="input-desc" name="descricao" placeholder="Descrição" value={novoItem.descricao} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
           <button className="btn-add" onClick={addItem}>+</button>
         </div>
 
