@@ -501,7 +501,7 @@ function App() {
 
       <section className="secao-dados">
         <form className="formulario" autoComplete="off">
-       <label>Funcionário</label>
+       <label>Funcionário (obrigatório)</label>
         <Combobox
           value={form.funcionario} // Importante para o reset funcionar
           onChange={(nome, codigo) => setForm({ ...form, funcionario: nome, cod_func: codigo })}
@@ -516,7 +516,7 @@ function App() {
               <input name="codParceiro" value={form.codParceiro} onChange={handleChange} placeholder="12345" onFocus={disableReadOnly} readOnly />
             </div>
             <div className="input-box">
-              <label>Contato</label>
+              <label>Contato (obrigatório)</label>
               <input name="contato" value={form.contato} onChange={handleChange} placeholder="(12) 34567-8901" onFocus={disableReadOnly} readOnly />
             </div>
           </div>
@@ -527,7 +527,7 @@ function App() {
       </section>
 
       <section className="secao-itens">
-        <h3>Itens Faltantes</h3>
+        <h3>Itens Faltantes (mínimo: 1)</h3>
         <div className="item-input-group">
           <input className="input-qtd" type="number" min="1" value={novoItem.quantidade} onChange={(e) => setNovoItem({ ...novoItem, quantidade: e.target.value })} />
           <input className="input-cod" name="cod_prod" placeholder="Código" value={novoItem.cod_prod} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
