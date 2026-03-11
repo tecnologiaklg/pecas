@@ -293,7 +293,7 @@ function App() {
         .from('conversas')
         .insert([{ 
           vendedor: form.funcionario, 
-          cod_vendedor: form.cod_func, // Adicionado aqui
+          cod_func: form.cod_func, // Adicionado aqui
           cliente: form.cliente, 
           codparceiro: form.codParceiro ? parseInt(form.codParceiro) : null,
           contato: form.contato,
@@ -335,8 +335,8 @@ function App() {
       .from('itens_faltantes')
       .select(`
         quantidade, cod_prod, descricao,
-        conversas!inner (vendedor, cod_vend, cliente, codparceiro, contato, url, dt_inclusao)
-      `) // Ajustado para cod_vend aqui
+        conversas!inner (vendedor, cod_func, cliente, codparceiro, contato, url, dt_inclusao)
+      `) // Ajustado para cod_func aqui
       .gte('conversas.dt_inclusao', `${dataInicio}T00:00:00`)
       .lte('conversas.dt_inclusao', `${dataFim}T23:59:59`);
 
@@ -347,7 +347,7 @@ function App() {
     
     const linhas = data.map(item => [
       new Date(item.conversas.dt_inclusao).toLocaleDateString('pt-BR'),
-      item.conversas.cod_vend || "", // Puxando o valor de cod_vend
+      item.conversas.cod_func || "", // Puxando o valor de cod_func
       item.conversas.vendedor,
       item.conversas.cliente,
       item.conversas.codparceiro,
