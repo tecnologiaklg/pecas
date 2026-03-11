@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "./supabaseClient";
 import "./App.css";
-
-import { useState, useEffect, useRef } from "react"; // Adicionado useRef
 
 function Combobox({ value, onChange, lista }) {
   const [open, setOpen] = useState(false);
