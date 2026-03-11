@@ -328,51 +328,51 @@ function App() {
     }
   }
 
-    async function exportarPlanilha() {
-      try {
-        setLoading(true);
-        const { data, error } = await supabase
-          .from('itens_faltantes')
-          .select(`
-            quantidade, cod_prod, descricao,
-            conversas!inner (vendedor, cod_vendedor, cliente, codparceiro, contato, url, dt_inclusao)
-          `) // Adicionado cod_vendedor na query acima
-          .gte('conversas.dt_inclusao', `${dataInicio}T00:00:00`)
-          .lte('conversas.dt_inclusao', `${dataFim}T23:59:59`);
+   async function exportarPlanilha() {
+  try {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('itens_faltantes')
+      .select(`
+        quantidade, cod_prod, descricao,
+        conversas!inner (vendedor, cod_vend, cliente, codparceiro, contato, url, dt_inclusao)
+      `) // Ajustado para cod_vend aqui
+      .gte('conversas.dt_inclusao', `${dataInicio}T00:00:00`)
+      .lte('conversas.dt_inclusao', `${dataFim}T23:59:59`);
 
-        if (error) throw error;
-        if (!data || data.length === 0) return alert("Nenhum dado encontrado.");
+    if (error) throw error;
+    if (!data || data.length === 0) return alert("Nenhum dado encontrado.");
 
-        // Adicionado "Cod. Vend" ao cabeçalho
-        const cabecalho = ["Data", "Cód. Vend", "Vendedor", "Cliente", "Cod. Parceiro", "Contato", "Cod Prod", "Descricao", "Qtd", "Link"];
-        
-        const linhas = data.map(item => [
-          new Date(item.conversas.dt_inclusao).toLocaleDateString('pt-BR'),
-          item.conversas.cod_vendedor || "", // Adicionado aqui
-          item.conversas.vendedor,
-          item.conversas.cliente,
-          item.conversas.codparceiro,
-          item.conversas.contato,
-          item.cod_prod || "",
-          item.descricao,
-          item.quantidade,
-          item.conversas.url || ""
-        ]);
+    const cabecalho = ["Data", "Cód. Vend", "Vendedor", "Cliente", "Cod. Parceiro", "Contato", "Cod Prod", "Descricao", "Qtd", "Link"];
+    
+    const linhas = data.map(item => [
+      new Date(item.conversas.dt_inclusao).toLocaleDateString('pt-BR'),
+      item.conversas.cod_vend || "", // Puxando o valor de cod_vend
+      item.conversas.vendedor,
+      item.conversas.cliente,
+      item.conversas.codparceiro,
+      item.conversas.contato,
+      item.cod_prod || "",
+      item.descricao,
+      item.quantidade,
+      item.conversas.url || ""
+    ]);
 
-        const csvContent = [cabecalho, ...linhas].map(e => e.join(";")).join("\n");
-        const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
-        const urlBlob = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = urlBlob;
-        link.download = `relatorio_${dataInicio}_a_${dataFim}.csv`;
-        link.click();
-        setShowExportModal(false);
-      } catch (error) {
-        alert("Erro na exportação: " + error.message);
-      } finally {
-        setLoading(false);
-      }
-    }
+    // Gera o conteúdo do CSV com separador ponto e vírgula (padrão Excel Brasil)
+    const csvContent = [cabecalho, ...linhas].map(e => e.join(";")).join("\n");
+    const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const urlBlob = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = urlBlob;
+    link.download = `relatorio_${dataInicio}_a_${dataFim}.csv`;
+    link.click();
+    setShowExportModal(false);
+  } catch (error) {
+    alert("Erro na exportação: " + error.message);
+  } finally {
+    setLoading(false);
+  }
+}
   
   return (
     <div className="container">
