@@ -235,21 +235,30 @@ function App() {
     if (errItens) throw errItens;
 
     // Processamento de dados
-    const statsVendedores = itensData.reduce((acc, item) => {
+      const statsVendedores = itensData.reduce((acc, item) => {
       const nome = item.conversas.vendedor;
+      
+      // Criamos um ID único para a conversa (usando a data de inclusão ou ID se tiver)
+      // para garantir que 1 conversa com 5 itens conte como apenas 1 atendimento
+      const conversaId = item.conversas.dt_inclusao + nome;
+
       if (!acc[nome]) {
-        acc[nome] = { atendimentos: new Set(), totalPeças: 0 };
+        acc[nome] = { atendimentosIds: new Set(), totalPeças: 0 };
       }
-      // Usamos Set para contar atendimentos únicos (conversas)
-      acc[nome].atendimentos.add(item.descricao + item.conversas.dt_inclusao); 
+
+      // Adiciona o ID ao Set (Set ignora duplicatas automaticamente)
+      acc[nome].atendimentosIds.add(conversaId); 
+      
+      // Soma a quantidade real de peças do item
       acc[nome].totalPeças += parseInt(item.quantidade || 0);
+      
       return acc;
     }, {});
 
-    // Formata para o estado
+    // Formata para o estado usando o .size do Set para os atendimentos
     const listaVendedores = Object.entries(statsVendedores).map(([nome, dados]) => ({
       nome,
-      atendimentos: dados.atendimentos.size,
+      atendimentos: dados.atendimentosIds.size, // Aqui pegamos a contagem única
       pecas: dados.totalPeças
     }));
 
