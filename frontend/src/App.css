@@ -652,29 +652,3 @@ input:focus {
   border-radius: 10px;
 }
 
-/* --- Ajuste de Badge no Dashboard --- */
-.vendedor-metrias {
-  display: flex;
-  gap: 10px;
-  margin-top: 5px;
-}
-
-.badge {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.badge-atend {
-  background: rgba(0, 242, 255, 0.1);
-  color: var(--accent);
-}
-
-.badge-pecas {
-  background: rgba(236, 239, 244, 0.05);
-  color: var(--text-dim);
-}

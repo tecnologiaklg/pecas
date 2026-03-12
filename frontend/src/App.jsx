@@ -404,31 +404,25 @@ function App() {
                   <h4>Ranking por Vendedor:</h4>
                   <div className="lista-vendedores-dash">
                     {/* Ordenando por quem vendeu mais peças */}
-                   {dashData.porVendedor
-                    .sort((a, b) => b.pecas - a.pecas)
-                    .map((vendedorObj, idx) => (
-                      <div key={idx} className="item-card-dash vendedor-stats">
-                        <span className="nome-vendedor">{vendedorObj.nome}</span>
-                        
-                        {/* Substitua o trecho das badges por este: */}
-                        <div className="vendedor-metrias" style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
-                          
-                          {/* Atendimentos */}
-                          <div className="badge-full-width">
-                            <span className="badge-icon">📞</span>
-                            <span className="badge-value">{vendedorObj.atendimentos}</span>
-                            <span className="badge-text">Atendimentos</span>
-                          </div>
-                          
-                          {/* Peças */}
-                          <div className="badge-full-width">
-                            <span className="badge-icon">⚙️</span>
-                            <span className="badge-value">{vendedorObj.pecas}</span>
-                            <span className="badge-text">Peças</span>
+                    {dashData.porVendedor
+                      .sort((a, b) => b.pecas - a.pecas)
+                      .map((vendedorObj, idx) => (
+                        <div key={idx} className="item-card-dash vendedor-stats">
+                          <span className="nome-vendedor">{vendedorObj.nome}</span>
+                          <div className="vendedor-metrias">
+                            <div className="badge badge-atend">
+                              <span className="badge-icon">📞</span>
+                              <span className="badge-value">{vendedorObj.atendimentos}</span>
+                              <span className="badge-label"> Atendimentos</span>
+                            </div>
+                            <div className="badge badge-pecas">
+                              <span className="badge-icon">⚙️</span>
+                              <span className="badge-value">{vendedorObj.pecas}</span>
+                              <span className="badge-label"> Peças</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
               ) : (
