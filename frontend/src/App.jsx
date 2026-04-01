@@ -161,12 +161,8 @@ function App() {
   { codigo: "31", nome: "Larissa" },
   { codigo: "55", nome: "Junior" },
   { codigo: "140", nome: "Duda" },
-  { codigo: "152", nome: "Weny" },
   { codigo: "154", nome: "João" },
-  { codigo: "155", nome: "Bryan" },
-  { codigo: "156", nome: "Ana Paula" },
-  { codigo: "157", nome: "Alexandre" },
-  { codigo: "158", nome: "Pedro" },
+  { codigo: "155", nome: "Bryan" }
 ];
 
   const [itens, setItens] = useState([]);
