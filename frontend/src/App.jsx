@@ -178,7 +178,7 @@ function App() {
           </div>
 
           <label>Link da Conversa</label>
-          <input name="link" value={form.link} onChange={handleChange} placeholder="https://wa.me/..." onFocus={disableReadOnly} readOnly />
+          <input name="link" value={form.link} onChange={handleChange} placeholder="https://klg.zapplataforma.chat/tickets/..." onFocus={disableReadOnly} readOnly />
         </form>
       </section>
 
