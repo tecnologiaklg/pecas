@@ -1,0 +1,121 @@
+import { useState, useEffect, useRef } from "react";
+
+export default function Combobox({ value, onChange, lista }) {
+    
+  const [open, setOpen] = useState(false);
+  const [filtro, setFiltro] = useState(value || "");
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const listRef = useRef(null); // Referência para a <ul>
+  const itemsRef = useRef([]); // Referência para os itens <li>
+
+  useEffect(() => {
+    setFiltro(value || "");
+  }, [value]);
+
+  const resultados = lista.filter(v =>
+    v.codigo.startsWith(filtro) || v.nome.toLowerCase().startsWith(filtro.toLowerCase())
+  );
+
+  // Garante que o scroll acompanhe a seleção das setas
+  useEffect(() => {
+    if (open && itemsRef.current[selectedIndex]) {
+      itemsRef.current[selectedIndex].scrollIntoView({
+        block: "nearest", // Move apenas o necessário para aparecer
+        behavior: "smooth"
+      });
+    }
+  }, [selectedIndex, open]);
+
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [filtro]);
+
+  const selecionar = (vendedor) => {
+    setFiltro(vendedor.nome);
+    onChange(vendedor.nome, vendedor.codigo);
+    setOpen(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (!open) {
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") setOpen(true);
+      return;
+    }
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev < resultados.length - 1 ? prev + 1 : prev));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedIndex(prev => (prev > 0 ? prev - 1 : 0));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (resultados.length > 0) {
+        selecionar(resultados[selectedIndex]);
+      }
+    } else if (e.key === "Escape") {
+      setOpen(false);
+    }
+  };
+
+  return (
+    <div className="custom-combobox" style={{ position: 'relative' }}>
+      <input
+        type="text"
+        placeholder="Digite código ou nome"
+        value={filtro}
+        onKeyDown={handleKeyDown}
+        onChange={(e) => {
+          setFiltro(e.target.value);
+          setOpen(true);
+          if (e.target.value === "") onChange("", "");
+        }}
+        onFocus={() => setOpen(true)}
+        onBlur={() => {
+          setTimeout(() => setOpen(false), 200);
+        }}
+      />
+      
+      {open && resultados.length > 0 && (
+        <ul 
+          className="options" 
+          ref={listRef} // Atribui a referência da lista
+          style={{ 
+            position: 'absolute', 
+            zIndex: 1000, 
+            width: '100%', 
+            background: 'var(--input-bg)',
+            maxHeight: '200px', 
+            overflowY: 'auto',
+            border: '1px solid var(--accent)',
+            borderRadius: '8px',
+            padding: 0, 
+            margin: '5px 0 0 0',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
+          }}
+        >
+          {resultados.map((v, index) => (
+            <li
+              key={v.codigo}
+              ref={el => itemsRef.current[index] = el} // Atribui a referência de cada item
+              onMouseDown={(e) => {
+                e.preventDefault(); 
+                selecionar(v);
+              }}
+              style={{ 
+                padding: '10px', 
+                cursor: 'pointer', 
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                color: 'var(--text-main)',
+                backgroundColor: index === selectedIndex ? 'rgba(0, 242, 255, 0.2)' : 'transparent'
+              }}
+            >
+              <strong style={{ color: 'var(--accent)' }}>{v.codigo}</strong> - {v.nome}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
