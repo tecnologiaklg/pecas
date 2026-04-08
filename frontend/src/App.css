@@ -1,3 +1,6 @@
+/* =========================================
+   1. VARIÁVEIS E RESET
+========================================= */
 :root {
   --bg-color: #1a1d23;
   --card-bg: #242933;
@@ -22,29 +25,34 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Ocupa exatamente a altura da tela */
+  height: 100vh;
   padding: 15px;
-  overflow: hidden; /* Impede scroll na página inteira */
+  overflow: hidden;
 }
 
+/* =========================================
+   2. LAYOUT PRINCIPAL
+========================================= */
 .container {
   background-color: var(--card-bg);
   width: 100%;
   max-width: 850px;
-  max-height: 98vh; /* Limita a altura do card */
+  max-height: 98vh;
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   display: flex;
-  flex-direction: column; /* Organiza os blocos verticalmente */
+  flex-direction: column;
 }
 
-/* --- Header --- */
+/* =========================================
+   3. HEADER
+========================================= */
 header {
   margin-bottom: 15px;
   border-bottom: 1px solid #3b4252;
   padding-bottom: 12px;
-  flex-shrink: 0; /* Não deixa o header diminuir */
+  flex-shrink: 0;
 }
 
 .header-top {
@@ -60,18 +68,6 @@ header h1 {
   letter-spacing: -0.5px;
 }
 
-.btn-open-export {
-  background: rgba(236, 239, 244, 0.05);
-  color: var(--text-dim);
-  border: 1px solid #3b4252;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.8rem;
-  transition: var(--transition);
-}
-
 .hora {
   display: inline-block;
   background: rgba(0, 242, 255, 0.1);
@@ -84,7 +80,9 @@ header h1 {
   border: 1px solid rgba(0, 242, 255, 0.3);
 }
 
-/* --- Formulário Principal --- */
+/* =========================================
+   4. FORMULÁRIOS E INPUTS
+========================================= */
 .formulario {
   display: flex;
   flex-direction: column;
@@ -124,86 +122,33 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(0, 242, 255, 0.1);
 }
 
-/* --- Seção de Itens (O miolo que pode scrollar) --- */
-.secao-itens {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden; /* Importante para o scroll interno funcionar */
-  flex-grow: 1; 
-}
-
-.secao-itens h3 {
-  font-size: 1rem;
-  margin: 5px 0 12px 0;
-}
-
-.item-input-group {
-  display: grid;
-  grid-template-columns: 80px 130px 1fr 50px;
-  gap: 10px;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 12px;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-/* LISTA DE ITENS COM SCROLL */
-.lista-itens {
-  overflow-y: auto;
-  padding-right: 8px;
-  flex-grow: 1;
-}
-
-/* Scrollbar Customizada */
-.lista-itens::-webkit-scrollbar {
-  width: 5px;
-}
-.lista-itens::-webkit-scrollbar-track {
-  background: transparent;
-}
-.lista-itens::-webkit-scrollbar-thumb {
-  background: #3b4252;
-  border-radius: 10px;
-}
-
-.item-card {
-  background: var(--input-bg);
-  padding: 10px 14px;
-  border-radius: 10px;
-  display: grid;
-  grid-template-columns: 90px 1fr 60px 30px;
-  gap: 12px;
-  align-items: center;
-  border-left: 3px solid var(--accent);
-  margin-bottom: 6px;
-}
-
-.item-cod-text {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--accent);
-  font-weight: bold;
+/* =========================================
+   5. BOTÕES GERAIS
+========================================= */
+.btn-open-export,
+.btn-mini-dash {
+  background: rgba(236, 239, 244, 0.05);
+  color: var(--text-dim);
+  border: 1px solid #3b4252;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
   font-size: 0.8rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
 }
 
-.item-desc-text {
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.btn-open-export:hover,
+.btn-mini-dash:hover {
+  background: rgba(0, 242, 255, 0.1);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
-.item-tag {
-  background: rgba(236, 239, 244, 0.08);
-  padding: 3px 6px;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  text-align: center;
-}
-
-/* --- Botões de Ação --- */
 .btn-add {
   background: var(--accent);
   color: #000;
@@ -250,107 +195,14 @@ input:focus {
   color: #000;
 }
 
-/* Responsividade */
-@media (max-width: 650px) {
-  .item-input-group {
-    grid-template-columns: 1fr 1fr;
-  }
-  .item-card {
-    grid-template-columns: 1fr 1fr 40px;
-  }
-  .item-cod-text { display: none; } /* Esconde código em telas muito pequenas */
-  body { overflow-y: auto; height: auto; }
-}
-
-/* --- Modal do Mini Dash --- */
-.modal-overlay.dash {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(10, 12, 16, 0.85); /* Mais escuro para destacar o dash */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  backdrop-filter: blur(6px);
-  padding: 20px;
-}
-
-.modal-content.dash-popup {
-  background: var(--card-bg); /* Fundo escuro */
-  padding: 24px;
-  border-radius: 16px;
-  max-width: 600px;
-  width: 95%;
-  max-height: 85vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #3b4252;
-}
-
-.dash-header h2 {
-  font-size: 1.2rem;
-  color: var(--accent);
-  margin: 0;
-}
-
-.dash-tabs {
-  display: flex;
-  gap: 8px;
-  margin: 15px 0;
-}
-
-.dash-tabs button {
-  flex: 1;
-  padding: 10px;
-  cursor: pointer;
-  border: 1px solid #3b4252;
-  border-radius: 8px;
-  background: var(--input-bg);
+.btn-close {
+  background: transparent;
+  border: none;
   color: var(--text-dim);
-  font-weight: 600;
-  font-size: 0.8rem;
-  transition: var(--transition);
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
-.dash-tabs button:hover {
-  border-color: var(--accent);
-  color: var(--text-main);
-}
-
-.dash-tabs button.active {
-  background: rgba(0, 242, 255, 0.1);
-  color: var(--accent);
-  border: 1px solid var(--accent);
-}
-
-.lista-itens-dash {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.item-card-dash {
-  display: flex;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.2); /* Sutilmente mais escuro que o fundo */
-  color: var(--text-main);
-  font-size: 0.85rem;
-  align-items: center;
-  border-left: 4px solid var(--accent);
-}
-
-.item-card-dash span {
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-/* Botão que aciona o Mini Dash */
 .btn-dash-trigger {
   background: transparent;
   color: var(--accent);
@@ -378,95 +230,135 @@ input:focus {
   width: 16px;
   height: 16px;
 }
-@media (max-width: 500px) {
-  .modal-content.dash-popup {
-    padding: 16px;
-    width: 100%;
-  }
 
-  .item-card-dash {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Divide em duas colunas no celular */
-    gap: 5px;
-  }
-
-  .item-card-dash span:first-child {
-    font-weight: bold;
-    color: var(--accent);
-  }
+/* =========================================
+   6. SEÇÃO DE ITENS E LISTAS
+========================================= */
+.secao-itens {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-grow: 1; 
 }
-/* Estilo do Botão Mini Dash */
-.btn-mini-dash {
-  background: rgba(236, 239, 244, 0.05); /* Fundo sutil */
-  color: var(--text-dim);
-  border: 1px solid #3b4252;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.8rem;
-  transition: var(--transition);
+
+.secao-itens h3 {
+  font-size: 1rem;
+  margin: 5px 0 12px 0;
+}
+
+.item-input-group {
+  display: grid;
+  grid-template-columns: 80px 130px 1fr 50px;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.lista-itens {
+  overflow-y: auto;
+  padding-right: 8px;
+  flex-grow: 1;
+}
+
+.lista-itens::-webkit-scrollbar {
+  width: 5px;
+}
+
+.lista-itens::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.lista-itens::-webkit-scrollbar-thumb {
+  background: #3b4252;
+  border-radius: 10px;
+}
+
+.item-card {
+  background: var(--input-bg);
+  padding: 10px 14px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 90px 1fr 60px 30px;
+  gap: 12px;
+  align-items: center;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 6px;
+}
+
+.item-cod-text {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.9rem;
+  min-width: 60px;
+}
+
+.item-desc-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-metadata {
   display: flex;
   align-items: center;
-  gap: 6px;
-  width: fit-content; /* Impede que o botão estique 100% */
+  gap: 12px;
+  flex-shrink: 0;
 }
 
-.btn-mini-dash:hover {
-  background: rgba(0, 242, 255, 0.1);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-/* Ajuste no Modal do Dash para não vir branco */
-.modal-content.dash-popup {
-  background: var(--card-bg);
+.item-tag-qty {
+  background: rgba(255, 255, 255, 0.1);
   color: var(--text-main);
-  border: 1px solid #3b4252;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
-.dash-header h3 {
-  color: var(--accent);
-  margin: 0;
-}
-
-.btn-close {
-  background: transparent;
-  border: none;
-  color: var(--text-dim);
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-/* Overlay que escurece o fundo */
+/* =========================================
+   7. MODAIS (GERAL E DASH)
+========================================= */
 .modal-overlay {
   position: fixed;
-  top: 0;
+  top: 0; 
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px); /* Efeito de desfoque no fundo */
+  width: 100%; 
+  height: 100%;
+  background: rgba(10, 12, 16, 0.85);
+  backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 9999;
+  padding: 30px;
 }
 
-/* Card do Dash */
-.dash-popup {
+.modal-content {
   background: var(--card-bg);
-  border: 1px solid var(--accent);
-  box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
-  width: 90%;
-  max-width: 500px;
+  color: var(--text-main);
+  padding: 24px;
   border-radius: 16px;
-  padding: 20px;
-  animation: fadeIn 0.3s ease;
+  border: 1px solid #3b4252;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+.dash-popup {
+  max-width: 700px;
+  width: 95%;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-color: var(--accent);
+  animation: fadeIn 0.3s ease;
 }
 
 .dash-header {
@@ -478,44 +370,46 @@ input:focus {
   margin-bottom: 15px;
 }
 
+.dash-header h2, 
 .dash-header h3 {
-  margin: 0;
+  font-size: 1.2rem;
   color: var(--accent);
-  font-size: 1.1rem;
+  margin: 0;
 }
 
-.btn-close {
-  background: transparent;
-  border: none;
-  color: var(--text-dim);
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-/* Estilo das Abas dentro do Dash */
 .dash-tabs {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 15px;
 }
 
 .dash-tabs button {
   flex: 1;
-  background: var(--input-bg);
-  border: 1px solid transparent;
-  color: var(--text-dim);
-  padding: 8px;
-  border-radius: 8px;
+  padding: 10px;
   cursor: pointer;
-  font-weight: bold;
+  border: 1px solid #3b4252;
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: var(--transition);
+}
+
+.dash-tabs button:hover {
+  border-color: var(--accent);
+  color: var(--text-main);
 }
 
 .dash-tabs button.active {
-  border-color: var(--accent);
-  color: var(--accent);
   background: rgba(0, 242, 255, 0.1);
+  color: var(--accent);
+  border: 1px solid var(--accent);
 }
 
+/* =========================================
+   8. COMPONENTES DO DASHBOARD
+========================================= */
 .resumo-tab li {
   list-style: none;
   padding: 8px;
@@ -526,18 +420,49 @@ input:focus {
   justify-content: space-between;
 }
 
-/* --- Modal Inputs e Ações --- */
+.lista-itens-dash {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-card-dash {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 20px;
+  background: var(--input-bg);
+  border-radius: 12px;
+  border-left: 4px solid var(--accent);
+  margin-bottom: 8px;
+  transition: transform 0.2s;
+}
+
+.item-card-dash:hover {
+  transform: scale(1.01);
+}
+
+.item-main-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1; 
+  min-width: 0; 
+}
+
+/* Ações Modal (Exportar) */
 .modal-inputs {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Espaço vertical entre os blocos de input */
-  margin-bottom: 20px; /* Espaço antes dos botões */
+  gap: 15px; 
+  margin-bottom: 20px; 
 }
 
 .modal-inputs label {
   display: flex;
   flex-direction: column;
-  gap: 5px; /* Espaço entre o texto e o input */
+  gap: 5px; 
   color: var(--text-dim);
   font-size: 0.75rem;
   font-weight: 700;
@@ -546,12 +471,12 @@ input:focus {
 
 .modal-actions {
   display: flex;
-  gap: 12px; /* Espaço horizontal entre os botões */
+  gap: 12px; 
   width: 100%;
 }
 
 .modal-actions button {
-  flex: 1; /* Faz os botões terem largura igual */
+  flex: 1; 
   padding: 12px;
   border-radius: 8px;
   font-weight: 700;
@@ -559,14 +484,12 @@ input:focus {
   transition: var(--transition);
 }
 
-/* Botão Cancelar */
 .btn-cancelar {
   background: rgba(76, 86, 106, 0.1);
   color: var(--text-dim);
   border: 1px solid #3b4252;
 }
 
-/* Botão de Ação: Baixar CSV / Accent */
 .btn-baixar {
   background: var(--accent);
   color: #1a1d23;
@@ -579,18 +502,9 @@ input:focus {
   transform: translateY(-2px);
 }
 
-/* Responsividade */
-@media (max-width: 500px) {
-  .modal-inputs {
-    gap: 10px;
-  }
-  .modal-actions {
-    flex-direction: column; /* Botões empilhados em telas pequenas */
-    gap: 10px;
-  }
-}
-
-/* --- Estilos do Combobox --- */
+/* =========================================
+   9. COMBOBOX
+========================================= */
 .custom-combobox {
   width: 100%;
 }
@@ -600,15 +514,14 @@ input:focus {
   cursor: text;
 }
 
-/* Lista de sugestões que aparece ao digitar */
 .custom-combobox ul.options {
   position: absolute;
-  top: calc(100% + 5px); /* Espaço logo abaixo do input */
+  top: calc(100% + 5px); 
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: var(--input-bg); /* Fundo igual aos inputs */
-  border: 1px solid var(--accent); /* Borda com a cor de destaque */
+  background-color: var(--input-bg); 
+  border: 1px solid var(--accent); 
   border-radius: 10px;
   list-style: none;
   padding: 0;
@@ -619,7 +532,6 @@ input:focus {
   animation: fadeIn 0.2s ease-out;
 }
 
-/* Item individual da lista */
 .custom-combobox ul.options li {
   padding: 12px 14px;
   cursor: pointer;
@@ -634,21 +546,295 @@ input:focus {
 }
 
 .custom-combobox ul.options li:hover {
-  background: rgba(0, 242, 255, 0.1); /* Fundo sutil ao passar o mouse */
+  background: rgba(0, 242, 255, 0.1); 
 }
 
 .custom-combobox ul.options li strong {
-  color: var(--accent); /* Código do vendedor em destaque */
+  color: var(--accent); 
   margin-right: 8px;
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Customização da scrollbar da lista do combobox */
 .custom-combobox ul.options::-webkit-scrollbar {
   width: 5px;
 }
+
 .custom-combobox ul.options::-webkit-scrollbar-thumb {
   background: var(--accent);
   border-radius: 10px;
 }
 
+/* =========================================
+   10. ANIMAÇÕES
+========================================= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   11. RESPONSIVIDADE
+========================================= */
+@media (max-width: 650px) {
+  body { 
+    overflow-y: auto; 
+    height: auto; 
+  }
+  .item-input-group {
+    grid-template-columns: 1fr 1fr;
+  }
+  .item-card {
+    grid-template-columns: 1fr 1fr 40px;
+  }
+  .item-cod-text { 
+    display: none; 
+  } 
+}
+
+@media (max-width: 500px) {
+  .modal-overlay {
+    padding: 15px; /* Reduz espaçamento no celular */
+  }
+  .modal-content.dash-popup {
+    padding: 16px;
+    width: 100%;
+  }
+  .item-card-dash {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 5px;
+  }
+  .item-card-dash span:first-child {
+    font-weight: bold;
+    color: var(--accent);
+  }
+  .modal-inputs {
+    gap: 10px;
+  }
+  .modal-actions {
+    flex-direction: column; 
+    gap: 10px;
+  }
+}
+
+/* Lado esquerdo: Código e Descrição */
+.item-info-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Dá o espaço entre o código e a descrição */
+  flex: 1;
+  min-width: 0; /* Essencial para o ellipsis (reticências) funcionar */
+}
+
+/* Garante que o código fique com a cor de destaque e não esprema */
+.item-info-wrapper .item-cod-text {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  font-weight: 800;
+  flex-shrink: 0; 
+}
+
+/* Lado direito: Quantidade e Parceiro */
+.item-data-wrapper {
+  display: flex;
+  flex-direction: column; /* Coloca a Qtd em cima e Parceiro embaixo */
+  align-items: flex-end; /* Joga os itens para a direita */
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Tag da quantidade (1x) centralizada com fundo sutil */
+.item-data-wrapper .item-tag-qty {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Linha do parceiro */
+.item-partner-tag {
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.item-partner-tag .partner-label {
+  margin-right: 4px;
+}
+
+.item-partner-tag .partner-value {
+  color: var(--text-main);
+  font-weight: bold;
+}
+
+/* =========================================
+   11. LAYOUT EM GRID (TABELA DO DASHBOARD)
+========================================= */
+/* Cabeçalho descritivo da tabela (COD | DESCRIÇÃO | CLIENTE...) */
+.grid-header {
+  display: grid;
+  grid-template-columns: 60px 2.5fr 1fr 1fr 60px; 
+  gap: 25px; /* Vão maior (era 15px) */
+  padding: 0 15px 8px 15px;
+  color: var(--text-dim);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #3b4252;
+  margin-bottom: 10px;
+}
+
+/* O card de cada item no dash */
+.item-card-dash.grid-layout {
+  display: grid;
+  grid-template-columns: 60px 2.5fr 1fr 1fr 60px; /* Igual ao header */
+  gap: 25px; /* Igual ao header */
+  align-items: center;
+  padding: 12px 15px;
+}
+
+/* Omissão de texto (reticências) para não quebrar a tabela */
+.item-card-dash.grid-layout span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.85rem;
+}
+
+/* Estilos individuais das colunas */
+.col-cod {
+  color: var(--accent);
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.col-desc {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.col-cliente {
+  color: #d08770; /* Cor neon para destacar do texto branco */
+  font-size: 0.8rem;
+  font-weight: 700; /* Mais encorpado */
+  font-family: 'JetBrains Mono', monospace; /* Fonte técnica, ótima para códigos/números */
+  text-transform: uppercase;
+}
+
+/* Deixando o vendedor com um tom de cinza bem mais claro e legível */
+.col-vendedor {
+  color: #d8dee9; /* Um tom bem mais claro e nítido que o text-dim */
+  font-size: 0.8rem;
+  font-weight: 600; /* Mais grossinho para destacar */
+  text-transform: uppercase;
+}
+
+.col-qtd {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  padding: 4px 0;
+  border-radius: 6px;
+  font-weight: 700;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* =========================================
+   12. RESPONSIVIDADE (MOBILE)
+========================================= */
+@media (max-width: 650px) {
+  body { 
+    overflow-y: auto; 
+    height: auto; 
+  }
+  .item-input-group {
+    grid-template-columns: 1fr 1fr;
+  }
+  .item-card {
+    grid-template-columns: 1fr 1fr 40px;
+  }
+  .item-cod-text { 
+    display: none; 
+  } 
+
+  /* Ajustes do Grid Dash para não quebrar em telas menores */
+  .grid-header { 
+    display: none; /* Esconde os títulos no celular */
+  }
+  .item-card-dash.grid-layout {
+    grid-template-columns: 1fr 1fr; /* Vira 2 colunas */
+    gap: 8px;
+  }
+  .col-desc { 
+    grid-column: span 2; /* A descrição ocupa a linha toda */
+  }
+  .col-qtd { 
+    width: fit-content; 
+    padding: 4px 12px; 
+  }
+}
+
+@media (max-width: 500px) {
+  .modal-overlay {
+    padding: 15px; 
+  }
+  .modal-content.dash-popup {
+    padding: 16px;
+    width: 100%;
+  }
+  .modal-inputs {
+    gap: 10px;
+  }
+  .modal-actions {
+    flex-direction: column; 
+    gap: 10px;
+  }
+}
+
+/* =========================================
+   ESTILO DO FILTRO SELECT (DASH)
+========================================= */
+.select-filtro {
+  background-color: var(--input-bg);
+  color: var(--text-main);
+  border: 1px solid #3b4252;
+  padding: 6px 32px 6px 12px; /* Espaço extra na direita para a seta */
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition);
+  
+  /* Remove o visual padrão feio do navegador */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  
+  /* Seta customizada elegante feita em SVG */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+}
+
+.select-filtro:hover {
+  border-color: var(--accent);
+}
+
+.select-filtro:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 242, 255, 0.1); /* Brilho neon sutil igual aos inputs */
+}
+
+/* Cor de fundo das opções na lista que se abre */
+.select-filtro option {
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  font-weight: 500;
+}

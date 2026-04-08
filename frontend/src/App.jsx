@@ -6,7 +6,7 @@ function Combobox({ value, onChange, lista }) {
   const [open, setOpen] = useState(false);
   const [filtro, setFiltro] = useState(value || "");
   const [selectedIndex, setSelectedIndex] = useState(0);
-  
+
   const listRef = useRef(null); // Referência para a <ul>
   const itemsRef = useRef([]); // Referência para os itens <li>
 
@@ -122,6 +122,7 @@ function Combobox({ value, onChange, lista }) {
 }
 
 function App() {
+  const [filtroVendedorDash, setFiltroVendedorDash] = useState("");
   const [hora, setHora] = useState(new Date());
   const [loading, setLoading] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
@@ -224,7 +225,7 @@ function App() {
         quantidade, 
         descricao, 
         cod_prod, 
-        conversas!inner (vendedor, dt_inclusao)
+        conversas!inner (vendedor, dt_inclusao, codparceiro)
       `)
       .gte('conversas.dt_inclusao', dataBusca);
 
@@ -387,7 +388,24 @@ function App() {
           <div className="modal-content dash-popup">
             <div className="dash-header">
               <h3>Mini Dash - Últimos 30 dias</h3>
-              <button className="btn-close" onClick={() => setShowDashPopup(false)}>×</button>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                {/* O filtro só aparece se estiver na aba de "Itens Faltantes" */}
+                {activeTab === "itens" && (
+                  <select 
+                    className="select-filtro"
+                    value={filtroVendedorDash}
+                    onChange={(e) => setFiltroVendedorDash(e.target.value)}
+                  >
+                    <option value="">Todos os Vendedores</option>
+                    {/* Reutiliza a sua lista de vendedores! */}
+                    {vendedoresLista.map(v => (
+                      <option key={v.codigo} value={v.nome}>{v.nome}</option>
+                    ))}
+                  </select>
+                )}
+                <button className="btn-close" onClick={() => setShowDashPopup(false)}>×</button>
+              </div>
             </div>
 
             <div className="dash-tabs">
@@ -430,24 +448,40 @@ function App() {
                       ))}
                   </div>
                 </div>
-              ) : (
+                ) : (
                 <div className="itens-tab">
                   <h4>Itens Faltantes (Últimos 30 dias)</h4>
+                  
+                  {/* CABEÇALHO DA TABELA */}
+                  <div className="grid-header">
+                    <span>COD</span>
+                    <span>DESCRIÇÃO</span>
+                    <span>CLIENTE</span>
+                    <span>VENDEDOR</span>
+                    <span style={{ textAlign: 'center' }}>QTD</span>
+                  </div>
+
                   <div className="lista-itens-dash">
-                    {ultimosItens.length > 0 ? (
-                      ultimosItens.map((item, i) => (
-                        <div key={i} className="item-card-dash">
-                          <span className="item-cod-text">{item.cod_prod || "---"}</span>
-                          <span className="item-desc-text">{item.descricao}</span>
-                          <span className="item-tag-qty">{item.quantidade}x</span>
+                  {ultimosItens.length > 0 ? (
+                    ultimosItens
+                      .filter(item => filtroVendedorDash === "" || item.conversas.vendedor === filtroVendedorDash)
+                      .map((item, i) => (
+                        <div key={i} className="item-card-dash grid-layout">
+                          <span className="col-cod" title={item.cod_prod}>{item.cod_prod || "---"}</span>
+                          <span className="col-desc" title={item.descricao}>{item.descricao}</span>
+                          <span className="col-cliente" title={item.conversas.cliente || item.conversas.codparceiro}>
+                            {item.conversas.cliente || `${item.conversas.codparceiro || "---"}`}
+                          </span>
+                          <span className="col-vendedor" title={item.conversas.vendedor}>{item.conversas.vendedor}</span>
+                          <span className="col-qtd">{item.quantidade}x</span>
                         </div>
                       ))
-                    ) : (
-                      <p className="no-data">Nenhum item registrado nos últimos 30 dias.</p>
-                    )}
-                  </div>
+                  ) : (
+                    <p className="no-data">Nenhum item registrado nos últimos 30 dias.</p>
+                  )}
                 </div>
-              )}
+                </div>
+                )}
             </div>
           </div>
         </div>
