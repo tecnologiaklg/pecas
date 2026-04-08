@@ -709,8 +709,10 @@ input:focus {
 /* Estilos individuais das colunas */
 .col-cod {
   color: var(--accent);
-  font-weight: 800;
+  font-weight: 700; /* Reduzido de 800 para a fonte não borrar */
+  font-size: 0.95rem; /* Letra maior para leitura clara */
   font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.5px; /* Dá um leve respiro entre os números */
 }
 
 .col-desc {
@@ -719,11 +721,12 @@ input:focus {
 }
 
 .col-cliente {
-  color: #d08770; /* Cor neon para destacar do texto branco */
-  font-size: 0.8rem;
-  font-weight: 700; /* Mais encorpado */
-  font-family: 'JetBrains Mono', monospace; /* Fonte técnica, ótima para códigos/números */
+  color: #ebcb8b; /* Dourado suave: excelente contraste e separa do Produto */
+  font-size: 0.9rem; /* Letra maior */
+  font-weight: 700; 
+  font-family: 'JetBrains Mono', monospace; 
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* Deixando o vendedor com um tom de cinza bem mais claro e legível */
