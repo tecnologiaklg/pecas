@@ -677,8 +677,8 @@ input:focus {
 /* Cabeçalho descritivo da tabela (COD | DESCRIÇÃO | CLIENTE...) */
 .grid-header {
   display: grid;
-  grid-template-columns: 60px 2.5fr 1fr 1fr 60px; 
-  gap: 25px; /* Vão maior (era 15px) */
+  grid-template-columns: 90px 60px 2.5fr 1fr 1fr 60px; 
+  gap: 20px; /* Vão maior (era 15px) */
   padding: 0 15px 8px 15px;
   color: var(--text-dim);
   font-size: 0.65rem;
@@ -692,8 +692,8 @@ input:focus {
 /* O card de cada item no dash */
 .item-card-dash.grid-layout {
   display: grid;
-  grid-template-columns: 60px 2.5fr 1fr 1fr 60px; /* Igual ao header */
-  gap: 25px; /* Igual ao header */
+  grid-template-columns: 90px 60px 2.5fr 1fr 1fr 60px;
+  gap: 20px; /* Igual ao header */
   align-items: center;
   padding: 12px 15px;
 }
@@ -747,6 +747,12 @@ input:focus {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.col-data {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+}
 /* =========================================
    12. RESPONSIVIDADE (MOBILE)
 ========================================= */
@@ -769,13 +775,23 @@ input:focus {
   .grid-header { 
     display: none; /* Esconde os títulos no celular */
   }
+
   .item-card-dash.grid-layout {
-    grid-template-columns: 1fr 1fr; /* Vira 2 colunas */
-    gap: 8px;
-  }
-  .col-desc { 
-    grid-column: span 2; /* A descrição ocupa a linha toda */
-  }
+      grid-template-columns: 1fr 1fr; /* Mantém 2 colunas no mobile */
+      gap: 8px;
+    }
+
+    /* Faz a data e a descrição ocuparem a linha toda ou se acomodarem */
+    .col-data {
+      grid-column: span 1;
+      font-size: 0.75rem;
+      color: var(--accent); /* No mobile, destaca a data */
+    }
+    
+    .col-desc { 
+      grid-column: span 2; 
+    }
+
   .col-qtd { 
     width: fit-content; 
     padding: 4px 12px; 

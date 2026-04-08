@@ -7,7 +7,10 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
   const [loadingDash, setLoadingDash] = useState(true);
   const [dashData, setDashData] = useState({ totalAtendimentos: 0, porVendedor: [] });
   const [ultimosItens, setUltimosItens] = useState([]);
-
+    const formatarData = (isoString) => {
+    if (!isoString) return "--/--";
+    return new Date(isoString).toLocaleDateString("pt-BR");
+    };
   // Busca os dados assim que o componente aparecer na tela
   useEffect(() => {
     carregarDash();
@@ -119,7 +122,7 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
             <div className="itens-tab">
               <h4>Itens Faltantes (Últimos 30 dias)</h4>
               <div className="grid-header">
-                <span>COD</span><span>DESCRIÇÃO</span><span>CLIENTE</span><span>VENDEDOR</span><span style={{ textAlign: 'center' }}>QTD</span>
+                <span>DATA</span><span>COD</span><span>DESCRIÇÃO</span><span>CLIENTE</span><span>VENDEDOR</span><span style={{ textAlign: 'center' }}>QTD</span>
               </div>
               <div className="lista-itens-dash">
                 {ultimosItens.length > 0 ? (
@@ -127,6 +130,7 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
                     .filter(item => filtroVendedorDash === "" || item.conversas.vendedor === filtroVendedorDash)
                     .map((item, i) => (
                       <div key={i} className="item-card-dash grid-layout">
+                        <span className="col-data">{formatarData(item.conversas.dt_inclusao)}</span>
                         <span className="col-cod">{item.cod_prod || "---"}</span>
                         <span className="col-desc">{item.descricao}</span>
                         <span className="col-cliente">{item.conversas.codparceiro || "---"}</span>
