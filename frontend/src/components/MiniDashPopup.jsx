@@ -103,11 +103,11 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
                       <span className="nome-vendedor">{vendedorObj.nome}</span>
                       <div className="vendedor-metrias">
                         <div className="badge badge-atend">
-                          <span className="badge-icon">📞</span>
-                          <span className="badge-value">{vendedorObj.atendimentos}</span>
+                          <span className="badge-icon">📞 Atendimentos: </span>
+                          <span className="badge-value">{vendedorObj.atendimentos} </span>
                         </div>
                         <div className="badge badge-pecas">
-                          <span className="badge-icon">⚙️</span>
+                          <span className="badge-icon">⚙️ Peças: </span>
                           <span className="badge-value">{vendedorObj.pecas}</span>
                         </div>
                       </div>
