@@ -20,7 +20,7 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
     setLoadingDash(true);
     try {
       const trintaDias = new Date();
-      trintaDias.setDate(trintaDias.getDate() - 30);
+      trintaDias.setDate(trintaDias.getDate() - 90);
       const dataBusca = trintaDias.toISOString();
 
       const { data: itensData, error: errItens } = await supabase
@@ -65,7 +65,7 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
     <div className="modal-overlay">
       <div className="modal-content dash-popup">
         <div className="dash-header">
-          <h3>Mini Dash - Últimos 30 dias</h3>
+          <h3>Mini Dash - Últimos 90 dias</h3>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             {activeTab === "itens" && (
@@ -120,7 +120,7 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
             </div>
           ) : (
             <div className="itens-tab">
-              <h4>Itens Faltantes (Últimos 30 dias)</h4>
+              <h4>Itens Faltantes (Últimos 90 dias)</h4>
               <div className="grid-header">
                 <span>DATA</span><span>COD</span><span>DESCRIÇÃO</span><span>CLIENTE</span><span>VENDEDOR</span><span style={{ textAlign: 'center' }}>QTD</span>
               </div>
