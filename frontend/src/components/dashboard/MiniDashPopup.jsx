@@ -147,7 +147,7 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
             </div>
           ) : (
             <div className={styles.itensTab}>
-              <h4>Itens Faltantes (Últimos 90 dias)</h4>
+              <h4>Itens Faltantes</h4>
               <div className={styles.gridHeader}>
                 <span>DATA</span><span>COD</span><span>DESCRIÇÃO</span><span>CLIENTE</span><span>VENDEDOR</span><span style={{ textAlign: 'center' }}>QTD</span>
               </div>
