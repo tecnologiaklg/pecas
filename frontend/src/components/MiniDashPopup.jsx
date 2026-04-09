@@ -7,6 +7,7 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
   const [loadingDash, setLoadingDash] = useState(true);
   const [dashData, setDashData] = useState({ totalAtendimentos: 0, porVendedor: [] });
   const [ultimosItens, setUltimosItens] = useState([]);
+  const [ordemData, setOrdemData] = useState("desc");
     const formatarData = (isoString) => {
     if (!isoString) return "--/--";
     return new Date(isoString).toLocaleDateString("pt-BR");
@@ -61,6 +62,10 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
     }
   }
 
+  const alternarOrdemData = () => {
+  setOrdemData(ordemAtual => ordemAtual === 'desc' ? 'asc' : 'desc');
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal-content dash-popup">
@@ -69,16 +74,27 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             {activeTab === "itens" && (
-              <select 
+            <div style={{ display: 'flex', gap: '10px' }}>
+                {/* Botão de Ordenação */}
+                <button 
+                className="btn-filter" 
+                onClick={() => setOrdemData(ordemData === "desc" ? "asc" : "desc")}
+                title="Inverter Ordem"
+                >
+                {ordemData === "desc" ? "📅 Mais Novos" : "📅 Mais Antigos"}
+                </button>
+
+                <select 
                 className="select-filtro"
                 value={filtroVendedorDash}
                 onChange={(e) => setFiltroVendedorDash(e.target.value)}
-              >
+                >
                 <option value="">Todos os Vendedores</option>
                 {vendedoresLista.map(v => (
-                  <option key={v.codigo} value={v.nome}>{v.nome}</option>
+                    <option key={v.codigo} value={v.nome}>{v.nome}</option>
                 ))}
-              </select>
+                </select>
+            </div>
             )}
             <button className="btn-close" onClick={onClose}>×</button>
           </div>
@@ -128,6 +144,16 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
                 {ultimosItens.length > 0 ? (
                   ultimosItens
                     .filter(item => filtroVendedorDash === "" || item.conversas.vendedor === filtroVendedorDash)
+                    .sort((a, b) => {
+                    const dataA = new Date(a.conversas.dt_inclusao).getTime();
+                    const dataB = new Date(b.conversas.dt_inclusao).getTime();
+
+                    if (ordemData === 'desc') {
+                      return dataB - dataA; // Mais novos primeiro
+                    } else {
+                      return dataA - dataB; // Mais antigos primeiro
+                    }
+                  })
                     .map((item, i) => (
                       <div key={i} className="item-card-dash grid-layout">
                         <span className="col-data">{formatarData(item.conversas.dt_inclusao)}</span>

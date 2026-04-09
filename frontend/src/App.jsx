@@ -173,7 +173,7 @@ function App() {
             </div>
             <div className="input-box">
               <label>Contato (obrigatório)</label>
-              <input name="contato" value={form.contato} onChange={handleChange} placeholder="(12) 34567-8901" onFocus={disableReadOnly} readOnly />
+              <input name="contato" value={form.contato} onChange={handleChange} placeholder="(12) 99999-9999" onFocus={disableReadOnly} readOnly />
             </div>
           </div>
 
