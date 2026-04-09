@@ -193,7 +193,7 @@ function App() {
           {itens.map((item, i) => (
             <div className={styles.itemCard} key={i}>
               <span className={styles.itemCodText}>{item.cod_prod || "---"}</span>
-              <span className={styles.itemDescText}>{item.descricao}</span>
+              <span className={styles.itemDescText} title={item.descricao}>{item.descricao}</span>
               <span className={styles.itemTag}>{item.quantidade}x</span>
               <button onClick={() => setItens(itens.filter((_, idx) => idx !== i))} className={styles.btnRemover}>×</button>
             </div>

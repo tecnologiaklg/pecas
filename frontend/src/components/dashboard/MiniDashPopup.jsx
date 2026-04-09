@@ -169,7 +169,7 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
                       <div key={i} className={styles.gridRow}>
                         <span className={styles.colData}>{formatarData(item.conversas.dt_inclusao)}</span>
                         <span className={styles.colCod}>{item.cod_prod || "---"}</span>
-                        <span className={styles.colDesc}>{item.descricao}</span>
+                        <span className={styles.colDesc} title={item.descricao}>{item.descricao}</span>
                         <span className={styles.colCliente}>{item.conversas.codparceiro || "---"}</span>
                         <span className={styles.colVendedor}>{item.conversas.vendedor}</span>
                         <span className={styles.colQtd}>{item.quantidade}x</span>
