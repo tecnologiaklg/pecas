@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import styles from "./Combobox.module.css";
 
 export default function Combobox({ value, onChange, lista }) {
     
@@ -60,10 +61,11 @@ export default function Combobox({ value, onChange, lista }) {
   };
 
   return (
-    <div className="custom-combobox" style={{ position: 'relative' }}>
+    <div className={styles.root}>
       <input
         type="text"
         placeholder="Digite código ou nome"
+        className={styles.input}
         value={filtro}
         onKeyDown={handleKeyDown}
         onChange={(e) => {
@@ -79,21 +81,8 @@ export default function Combobox({ value, onChange, lista }) {
       
       {open && resultados.length > 0 && (
         <ul 
-          className="options" 
+          className={styles.options}
           ref={listRef} // Atribui a referência da lista
-          style={{ 
-            position: 'absolute', 
-            zIndex: 1000, 
-            width: '100%', 
-            background: 'var(--input-bg)',
-            maxHeight: '200px', 
-            overflowY: 'auto',
-            border: '1px solid var(--accent)',
-            borderRadius: '8px',
-            padding: 0, 
-            margin: '5px 0 0 0',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
-          }}
         >
           {resultados.map((v, index) => (
             <li
@@ -103,15 +92,9 @@ export default function Combobox({ value, onChange, lista }) {
                 e.preventDefault(); 
                 selecionar(v);
               }}
-              style={{ 
-                padding: '10px', 
-                cursor: 'pointer', 
-                borderBottom: '1px solid rgba(255,255,255,0.1)',
-                color: 'var(--text-main)',
-                backgroundColor: index === selectedIndex ? 'rgba(0, 242, 255, 0.2)' : 'transparent'
-              }}
+              className={`${styles.option} ${index === selectedIndex ? styles.optionSelected : ""}`}
             >
-              <strong style={{ color: 'var(--accent)' }}>{v.codigo}</strong> - {v.nome}
+              <strong className={styles.codigo}>{v.codigo}</strong> - {v.nome}
             </li>
           ))}
         </ul>

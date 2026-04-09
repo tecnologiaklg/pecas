@@ -1,0 +1,274 @@
+/* Layout principal */
+.container {
+  background-color: var(--card-bg);
+  width: 100%;
+  max-width: 850px;
+  max-height: 98vh;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.titulo {
+  font-size: 1.3rem;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.acoesHeader {
+  display: flex;
+  gap: 10px;
+}
+
+.hora {
+  display: inline-block;
+  background: var(--chip-bg);
+  color: var(--accent);
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid var(--chip-border);
+}
+
+/* Form */
+.secaoDados {
+  flex-shrink: 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.label {
+  color: var(--text-dim);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.rowInputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.inputBox {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input {
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  transition: var(--transition);
+  width: 100%;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 242, 255, 0.1);
+}
+
+/* Botões */
+.btn {
+  background: var(--button-bg);
+  color: var(--text-dim);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+}
+
+.btn:hover {
+  background: var(--button-hover-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btnClose {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.btnAdd {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  height: 38px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btnAdd:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btnRemover {
+  background: transparent;
+  border: none;
+  color: var(--danger);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.btnRegistrar {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  border-radius: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.btnRegistrar:hover:not(:disabled) {
+  background: var(--accent);
+  color: #000;
+}
+
+/* Itens */
+.secaoItens {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.tituloItens {
+  font-size: 1rem;
+  margin: 5px 0 12px 0;
+}
+
+.itemInputGroup {
+  display: grid;
+  grid-template-columns: 80px 130px 1fr 50px;
+  gap: 10px;
+  background: var(--soft-panel-bg);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.inputQtd {
+  composes: input;
+}
+
+.inputCod {
+  composes: input;
+}
+
+.inputDesc {
+  composes: input;
+}
+
+.listaItens {
+  overflow-y: auto;
+  padding-right: 8px;
+  flex-grow: 1;
+}
+
+.itemCard {
+  background: var(--input-bg);
+  padding: 10px 14px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 90px 1fr 60px 30px;
+  gap: 12px;
+  align-items: center;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 6px;
+}
+
+.itemCodText {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.9rem;
+  min-width: 60px;
+}
+
+.itemDescText {
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemTag {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  border: 1px solid rgba(255,255,255,0.05);
+  text-align: center;
+}
+
+@media (max-width: 650px) {
+  .itemInputGroup {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .itemCard {
+    grid-template-columns: 1fr 1fr 40px;
+  }
+
+  .itemCodText {
+    display: none;
+  }
+}
+

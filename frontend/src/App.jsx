@@ -1,19 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { supabase } from "./supabaseClient";
-import "./App.css";
+import styles from "./App.module.css";
 
 // Importando os componentes que separamos
-import Combobox from "./components/Combobox";
-import ExportModal from "./components/ExportModal";
-import MiniDashPopup from "./components/MiniDashPopup";
+import { Combobox, ExportModal, MiniDashPopup } from "./components";
 
 // Importando as constantes e utilitários
 import { vendedoresLista } from "./utils/constants";
 import { aplicarMascaraTelefone } from "./utils/formatters";
+import { useClock } from "./hooks/useClock";
+import { useTheme } from "./hooks/useTheme";
 
 function App() {
   // --- ESTADOS DE INTERFACE ---
-  const [hora, setHora] = useState(new Date());
+  const hora = useClock();
+  const { theme, toggle: toggleTheme } = useTheme();
   const [loading, setLoading] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showDashPopup, setShowDashPopup] = useState(false);
@@ -34,12 +35,6 @@ function App() {
     quantidade: 1,
     cod_prod: ""
   });
-
-  // --- EFEITOS ---
-  useEffect(() => {
-    const interval = setInterval(() => setHora(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   // --- LÓGICA DE MANIPULAÇÃO ---
   const disableReadOnly = (e) => { e.target.readOnly = false; };
@@ -126,7 +121,7 @@ function App() {
   }
 
   return (
-    <div className="container">
+    <div className={styles.container}>
       {/* Modais Organizados */}
       {showDashPopup && (
         <MiniDashPopup 
@@ -139,71 +134,74 @@ function App() {
         <ExportModal onClose={() => setShowExportModal(false)} />
       )}
 
-      <header>
-        <div className="header-top">
-          <h1>Peças Faltantes</h1>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button className="btn-mini-dash" onClick={() => setShowDashPopup(true)}>
+      <header className={styles.header}>
+        <div className={styles.headerTop}>
+          <h1 className={styles.titulo}>Peças Faltantes</h1>
+          <div className={styles.acoesHeader}>
+            <button className={styles.btn} onClick={toggleTheme} title="Alternar tema">
+              {theme === "light" ? "🌙 Escuro" : "☀️ Claro"}
+            </button>
+            <button className={styles.btn} onClick={() => setShowDashPopup(true)}>
               📊 Mini Dash
             </button>
-            <button className="btn-open-export" onClick={() => setShowExportModal(true)}>
+            <button className={styles.btn} onClick={() => setShowExportModal(true)}>
               📊 Exportar
             </button>
           </div>
         </div>
-        <div className="hora">{hora.toLocaleTimeString()}</div>
+        <div className={styles.hora}>{hora.toLocaleTimeString()}</div>
       </header>
 
-      <section className="secao-dados">
-        <form className="formulario" autoComplete="off">
-          <label>Funcionário (obrigatório)</label>
+      <section className={styles.secaoDados}>
+        <form className={styles.formulario} autoComplete="off">
+          <label className={styles.label}>Funcionário (obrigatório)</label>
           <Combobox
             value={form.funcionario}
             onChange={(nome, codigo) => setForm({ ...form, funcionario: nome, cod_func: codigo })}
             lista={vendedoresLista}
           />
           
-          <label>Cliente</label>
-          <input name="cliente" value={form.cliente} onChange={handleChange} placeholder="Cliente" onFocus={disableReadOnly} readOnly />
+          <label className={styles.label}>Cliente</label>
+          <input className={styles.input} name="cliente" value={form.cliente} onChange={handleChange} placeholder="Cliente" onFocus={disableReadOnly} readOnly />
 
-          <div className="row-inputs">
-            <div className="input-box">
-              <label>Cód. Parceiro</label>
-              <input name="codParceiro" value={form.codParceiro} onChange={handleChange} placeholder="12345" onFocus={disableReadOnly} readOnly />
+          <div className={styles.rowInputs}>
+            <div className={styles.inputBox}>
+              <label className={styles.label}>Cód. Parceiro</label>
+              <input className={styles.input} name="codParceiro" value={form.codParceiro} onChange={handleChange} placeholder="12345" onFocus={disableReadOnly} readOnly />
             </div>
-            <div className="input-box">
-              <label>Contato (obrigatório)</label>
-              <input name="contato" value={form.contato} onChange={handleChange} placeholder="(12) 99999-9999" onFocus={disableReadOnly} readOnly />
+            <div className={styles.inputBox}>
+              <label className={styles.label}>Contato (obrigatório)</label>
+              <input className={styles.input} name="contato" value={form.contato} onChange={handleChange} placeholder="(12) 99999-9999" onFocus={disableReadOnly} readOnly />
             </div>
           </div>
 
-          <label>Link da Conversa</label>
-          <input name="link" value={form.link} onChange={handleChange} placeholder="https://klg.zapplataforma.chat/tickets/..." onFocus={disableReadOnly} readOnly />
+          <label className={styles.label}>Link da Conversa</label>
+          <input className={styles.input} name="link" value={form.link} onChange={handleChange} placeholder="https://klg.zapplataforma.chat/tickets/..." onFocus={disableReadOnly} readOnly />
         </form>
       </section>
 
-      <section className="secao-itens">
-        <h3>Itens Faltantes (mínimo: 1)</h3>
-        <div className="item-input-group">
-          <input className="input-qtd" type="number" min="1" value={novoItem.quantidade} onChange={(e) => setNovoItem({ ...novoItem, quantidade: e.target.value })} />
-          <input className="input-cod" name="cod_prod" placeholder="Código" value={novoItem.cod_prod} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
-          <input className="input-desc" name="descricao" placeholder="Descrição (obrigatório)" value={novoItem.descricao} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
-          <button className="btn-add" onClick={addItem}>+</button>
+      <section className={styles.secaoItens}>
+        <h3 className={styles.tituloItens}>Itens Faltantes (mínimo: 1)</h3>
+        <div className={styles.itemInputGroup}>
+          <input className={styles.input} type="number" min="1" value={novoItem.quantidade} onChange={(e) => setNovoItem({ ...novoItem, quantidade: e.target.value })} />
+          <input className={styles.input} name="cod_prod" placeholder="Código" value={novoItem.cod_prod} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
+          <input className={styles.input} name="descricao" placeholder="Descrição (obrigatório)" value={novoItem.descricao} onChange={handleItemChange} onFocus={disableReadOnly} readOnly />
+          <button className={styles.btnAdd} onClick={addItem}>+</button>
         </div>
 
-        <div className="lista-itens">
+        <div className={styles.listaItens}>
           {itens.map((item, i) => (
-            <div className="item-card" key={i}>
-              <span className="item-cod-text">{item.cod_prod || "---"}</span>
-              <span className="item-desc-text">{item.descricao}</span>
-              <span className="item-tag">{item.quantidade}x</span>
-              <button onClick={() => setItens(itens.filter((_, idx) => idx !== i))} className="btn-remover">×</button>
+            <div className={styles.itemCard} key={i}>
+              <span className={styles.itemCodText}>{item.cod_prod || "---"}</span>
+              <span className={styles.itemDescText}>{item.descricao}</span>
+              <span className={styles.itemTag}>{item.quantidade}x</span>
+              <button onClick={() => setItens(itens.filter((_, idx) => idx !== i))} className={styles.btnRemover}>×</button>
             </div>
           ))}
         </div>
       </section>
 
-      <button className="btn-registrar" onClick={registrar} disabled={loading}>
+      <button className={styles.btnRegistrar} onClick={registrar} disabled={loading}>
         {loading ? "SALVANDO..." : "FINALIZAR REGISTRO"}
       </button>
     </div>

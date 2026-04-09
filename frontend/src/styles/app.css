@@ -1,3 +1,4 @@
+/* Copiado de src/App.css durante reorganização */
 /* =========================================
    1. VARIÁVEIS E RESET
 ========================================= */
@@ -10,7 +11,41 @@
   --accent: #00f2ff;
   --accent-hover: #00c8d4;
   --danger: #ff5f5f;
+  --border-color: #3b4252;
+  --soft-panel-bg: rgba(0, 0, 0, 0.2);
+  --overlay-bg: rgba(10, 12, 16, 0.85);
+  --button-bg: rgba(236, 239, 244, 0.05);
+  --button-hover-bg: rgba(0, 242, 255, 0.12);
+  --chip-bg: rgba(0, 242, 255, 0.1);
+  --chip-border: rgba(0, 242, 255, 0.3);
+  --hairline: rgba(255, 255, 255, 0.08);
+  --shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  --modal-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   --transition: all 0.2s ease;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  /* Mais suave e menos "estourado" */
+  --bg-color: #e9eef3;
+  --card-bg: #f4f6f8;
+  --input-bg: #eef2f6;
+  --text-main: #0f172a;
+  --text-dim: #334155;
+  --accent: #0ea5e9;
+  --accent-hover: #0284c7;
+  --danger: #dc2626;
+  --border-color: #cbd5e1;
+  --soft-panel-bg: rgba(15, 23, 42, 0.04);
+  --overlay-bg: rgba(15, 23, 42, 0.28);
+  --button-bg: rgba(15, 23, 42, 0.06);
+  --button-hover-bg: rgba(14, 165, 233, 0.12);
+  --chip-bg: rgba(14, 165, 233, 0.10);
+  --chip-border: rgba(14, 165, 233, 0.25);
+  --hairline: rgba(15, 23, 42, 0.10);
+  --shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+  --modal-shadow: 0 20px 40px rgba(15, 23, 42, 0.18);
+  color-scheme: light;
 }
 
 * {
@@ -30,6 +65,33 @@ body {
   overflow: hidden;
 }
 
+/* Melhor contraste no modo claro */
+:root[data-theme="light"] body {
+  color: var(--text-main);
+}
+
+.btn-theme {
+  background: var(--button-bg);
+  color: var(--text-dim);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+}
+
+.btn-theme:hover {
+  background: var(--button-hover-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* =========================================
    2. LAYOUT PRINCIPAL
 ========================================= */
@@ -40,7 +102,7 @@ body {
   max-height: 98vh;
   padding: 24px;
   border-radius: 16px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
 }
@@ -50,7 +112,7 @@ body {
 ========================================= */
 header {
   margin-bottom: 15px;
-  border-bottom: 1px solid #3b4252;
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 12px;
   flex-shrink: 0;
 }
@@ -70,14 +132,14 @@ header h1 {
 
 .hora {
   display: inline-block;
-  background: rgba(0, 242, 255, 0.1);
+  background: var(--chip-bg);
   color: var(--accent);
   padding: 3px 10px;
   border-radius: 6px;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
   font-size: 0.85rem;
-  border: 1px solid rgba(0, 242, 255, 0.3);
+  border: 1px solid var(--chip-border);
 }
 
 /* =========================================
@@ -107,10 +169,10 @@ header h1 {
 
 input {
   background: var(--input-bg);
-  border: 1px solid #3b4252;
+  border: 1px solid var(--border-color);
   padding: 10px 14px;
   border-radius: 8px;
-  color: #fff;
+  color: var(--text-main);
   font-size: 0.9rem;
   transition: var(--transition);
   width: 100%;
@@ -127,9 +189,9 @@ input:focus {
 ========================================= */
 .btn-open-export,
 .btn-mini-dash {
-  background: rgba(236, 239, 244, 0.05);
+  background: var(--button-bg);
   color: var(--text-dim);
-  border: 1px solid #3b4252;
+  border: 1px solid var(--border-color);
   padding: 6px 12px;
   border-radius: 8px;
   cursor: pointer;
@@ -144,7 +206,7 @@ input:focus {
 
 .btn-open-export:hover,
 .btn-mini-dash:hover {
-  background: rgba(0, 242, 255, 0.1);
+  background: var(--button-hover-bg);
   border-color: var(--accent);
   color: var(--accent);
 }
@@ -221,7 +283,7 @@ input:focus {
 }
 
 .btn-dash-trigger:hover {
-  background: rgba(0, 242, 255, 0.1);
+  background: var(--button-hover-bg);
   box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
   transform: translateY(-1px);
 }
@@ -238,7 +300,7 @@ input:focus {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  flex-grow: 1; 
+  flex-grow: 1;
 }
 
 .secao-itens h3 {
@@ -250,7 +312,7 @@ input:focus {
   display: grid;
   grid-template-columns: 80px 130px 1fr 50px;
   gap: 10px;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--soft-panel-bg);
   padding: 12px;
   border-radius: 12px;
   margin-bottom: 12px;
@@ -273,7 +335,7 @@ input:focus {
 }
 
 .lista-itens::-webkit-scrollbar-thumb {
-  background: #3b4252;
+  background: var(--border-color);
   border-radius: 10px;
 }
 
@@ -328,11 +390,11 @@ input:focus {
 ========================================= */
 .modal-overlay {
   position: fixed;
-  top: 0; 
+  top: 0;
   left: 0;
-  width: 100%; 
+  width: 100%;
   height: 100%;
-  background: rgba(10, 12, 16, 0.85);
+  background: var(--overlay-bg);
   backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
@@ -346,8 +408,8 @@ input:focus {
   color: var(--text-main);
   padding: 24px;
   border-radius: 5px;
-  border: 1px solid #3b4252;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--modal-shadow);
   display: flex;
   flex-direction: column;
 }
@@ -365,12 +427,12 @@ input:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #3b4252;
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 10px;
   margin-bottom: 15px;
 }
 
-.dash-header h2, 
+.dash-header h2,
 .dash-header h3 {
   font-size: 1.2rem;
   color: var(--accent);
@@ -387,7 +449,7 @@ input:focus {
   flex: 1;
   padding: 10px;
   cursor: pointer;
-  border: 1px solid #3b4252;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   background: var(--input-bg);
   color: var(--text-dim);
@@ -402,7 +464,7 @@ input:focus {
 }
 
 .dash-tabs button.active {
-  background: rgba(0, 242, 255, 0.1);
+  background: var(--button-hover-bg);
   color: var(--accent);
   border: 1px solid var(--accent);
 }
@@ -413,7 +475,7 @@ input:focus {
 .resumo-tab li {
   list-style: none;
   padding: 8px;
-  background: rgba(0,0,0,0.2);
+  background: var(--soft-panel-bg);
   margin-bottom: 5px;
   border-radius: 6px;
   display: flex;
@@ -447,22 +509,22 @@ input:focus {
   display: flex;
   align-items: center;
   gap: 15px;
-  flex: 1; 
-  min-width: 0; 
+  flex: 1;
+  min-width: 0;
 }
 
 /* Ações Modal (Exportar) */
 .modal-inputs {
   display: flex;
   flex-direction: column;
-  gap: 15px; 
-  margin-bottom: 20px; 
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .modal-inputs label {
   display: flex;
   flex-direction: column;
-  gap: 5px; 
+  gap: 5px;
   color: var(--text-dim);
   font-size: 0.75rem;
   font-weight: 700;
@@ -471,12 +533,12 @@ input:focus {
 
 .modal-actions {
   display: flex;
-  gap: 12px; 
+  gap: 12px;
   width: 100%;
 }
 
 .modal-actions button {
-  flex: 1; 
+  flex: 1;
   padding: 12px;
   border-radius: 8px;
   font-weight: 700;
@@ -487,7 +549,7 @@ input:focus {
 .btn-cancelar {
   background: rgba(76, 86, 106, 0.1);
   color: var(--text-dim);
-  border: 1px solid #3b4252;
+  border: 1px solid var(--border-color);
 }
 
 .btn-baixar {
@@ -516,12 +578,12 @@ input:focus {
 
 .custom-combobox ul.options {
   position: absolute;
-  top: calc(100% + 5px); 
+  top: calc(100% + 5px);
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: var(--input-bg); 
-  border: 1px solid var(--accent); 
+  background-color: var(--input-bg);
+  border: 1px solid var(--accent);
   border-radius: 10px;
   list-style: none;
   padding: 0;
@@ -537,7 +599,7 @@ input:focus {
   cursor: pointer;
   font-size: 0.9rem;
   color: var(--text-main);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--hairline);
   transition: var(--transition);
 }
 
@@ -546,11 +608,11 @@ input:focus {
 }
 
 .custom-combobox ul.options li:hover {
-  background: rgba(0, 242, 255, 0.1); 
+  background: rgba(0, 242, 255, 0.1);
 }
 
 .custom-combobox ul.options li strong {
-  color: var(--accent); 
+  color: var(--accent);
   margin-right: 8px;
   font-family: 'JetBrains Mono', monospace;
 }
@@ -576,9 +638,9 @@ input:focus {
    11. RESPONSIVIDADE
 ========================================= */
 @media (max-width: 650px) {
-  body { 
-    overflow-y: auto; 
-    height: auto; 
+  body {
+    overflow-y: auto;
+    height: auto;
   }
   .item-input-group {
     grid-template-columns: 1fr 1fr;
@@ -586,14 +648,14 @@ input:focus {
   .item-card {
     grid-template-columns: 1fr 1fr 40px;
   }
-  .item-cod-text { 
-    display: none; 
-  } 
+  .item-cod-text {
+    display: none;
+  }
 }
 
 @media (max-width: 500px) {
   .modal-overlay {
-    padding: 15px; /* Reduz espaçamento no celular */
+    padding: 15px;
   }
   .modal-content.dash-popup {
     padding: 16px;
@@ -601,7 +663,7 @@ input:focus {
   }
   .item-card-dash {
     display: grid;
-    grid-template-columns: 1fr 1fr; 
+    grid-template-columns: 1fr 1fr;
     gap: 5px;
   }
   .item-card-dash span:first-child {
@@ -612,7 +674,7 @@ input:focus {
     gap: 10px;
   }
   .modal-actions {
-    flex-direction: column; 
+    flex-direction: column;
     gap: 10px;
   }
 }
@@ -621,29 +683,26 @@ input:focus {
 .item-info-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px; /* Dá o espaço entre o código e a descrição */
+  gap: 10px;
   flex: 1;
-  min-width: 0; /* Essencial para o ellipsis (reticências) funcionar */
+  min-width: 0;
 }
 
-/* Garante que o código fique com a cor de destaque e não esprema */
 .item-info-wrapper .item-cod-text {
   font-family: 'JetBrains Mono', monospace;
   color: var(--accent);
   font-weight: 800;
-  flex-shrink: 0; 
+  flex-shrink: 0;
 }
 
-/* Lado direito: Quantidade e Parceiro */
 .item-data-wrapper {
   display: flex;
-  flex-direction: column; /* Coloca a Qtd em cima e Parceiro embaixo */
-  align-items: flex-end; /* Joga os itens para a direita */
+  flex-direction: column;
+  align-items: flex-end;
   gap: 6px;
   flex-shrink: 0;
 }
 
-/* Tag da quantidade (1x) centralizada com fundo sutil */
 .item-data-wrapper .item-tag-qty {
   background: rgba(255, 255, 255, 0.1);
   color: var(--text-main);
@@ -654,7 +713,6 @@ input:focus {
   border: 1px solid rgba(255,255,255,0.05);
 }
 
-/* Linha do parceiro */
 .item-partner-tag {
   display: flex;
   align-items: center;
@@ -674,31 +732,28 @@ input:focus {
 /* =========================================
    11. LAYOUT EM GRID (TABELA DO DASHBOARD)
 ========================================= */
-/* Cabeçalho descritivo da tabela (COD | DESCRIÇÃO | CLIENTE...) */
 .grid-header {
   display: grid;
-  grid-template-columns: 90px 60px 2.5fr 1fr 1fr 60px; 
-  gap: 20px; /* Vão maior (era 15px) */
+  grid-template-columns: 90px 60px 2.5fr 1fr 1fr 60px;
+  gap: 20px;
   padding: 0 15px 8px 15px;
   color: var(--text-dim);
   font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  border-bottom: 1px solid #3b4252;
+  border-bottom: 1px solid var(--border-color);
   margin-bottom: 10px;
 }
 
-/* O card de cada item no dash */
 .item-card-dash.grid-layout {
   display: grid;
   grid-template-columns: 90px 60px 2.5fr 1fr 1fr 60px;
-  gap: 20px; /* Igual ao header */
+  gap: 20px;
   align-items: center;
   padding: 12px 15px;
 }
 
-/* Omissão de texto (reticências) para não quebrar a tabela */
 .item-card-dash.grid-layout span {
   white-space: nowrap;
   overflow: hidden;
@@ -706,13 +761,12 @@ input:focus {
   font-size: 0.85rem;
 }
 
-/* Estilos individuais das colunas */
 .col-cod {
   color: var(--accent);
-  font-weight: 700; /* Reduzido de 800 para a fonte não borrar */
-  font-size: 0.95rem; /* Letra maior para leitura clara */
+  font-weight: 700;
+  font-size: 0.95rem;
   font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.5px; /* Dá um leve respiro entre os números */
+  letter-spacing: 0.5px;
 }
 
 .col-desc {
@@ -721,19 +775,18 @@ input:focus {
 }
 
 .col-cliente {
-  color: #ebcb8b; /* Dourado suave: excelente contraste e separa do Produto */
-  font-size: 0.9rem; /* Letra maior */
-  font-weight: 700; 
-  font-family: 'JetBrains Mono', monospace; 
+  color: #ebcb8b;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-/* Deixando o vendedor com um tom de cinza bem mais claro e legível */
 .col-vendedor {
-  color: #d8dee9; /* Um tom bem mais claro e nítido que o text-dim */
+  color: #d8dee9;
   font-size: 0.8rem;
-  font-weight: 600; /* Mais grossinho para destacar */
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -753,54 +806,36 @@ input:focus {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 500;
 }
-/* =========================================
-   12. RESPONSIVIDADE (MOBILE)
-========================================= */
-@media (max-width: 650px) {
-  body { 
-    overflow-y: auto; 
-    height: auto; 
-  }
-  .item-input-group {
-    grid-template-columns: 1fr 1fr;
-  }
-  .item-card {
-    grid-template-columns: 1fr 1fr 40px;
-  }
-  .item-cod-text { 
-    display: none; 
-  } 
 
-  /* Ajustes do Grid Dash para não quebrar em telas menores */
-  .grid-header { 
-    display: none; /* Esconde os títulos no celular */
+@media (max-width: 650px) {
+  .grid-header {
+    display: none;
   }
 
   .item-card-dash.grid-layout {
-      grid-template-columns: 1fr 1fr; /* Mantém 2 colunas no mobile */
-      gap: 8px;
-    }
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
 
-    /* Faz a data e a descrição ocuparem a linha toda ou se acomodarem */
-    .col-data {
-      grid-column: span 1;
-      font-size: 0.75rem;
-      color: var(--accent); /* No mobile, destaca a data */
-    }
-    
-    .col-desc { 
-      grid-column: span 2; 
-    }
+  .col-data {
+    grid-column: span 1;
+    font-size: 0.75rem;
+    color: var(--accent);
+  }
 
-  .col-qtd { 
-    width: fit-content; 
-    padding: 4px 12px; 
+  .col-desc {
+    grid-column: span 2;
+  }
+
+  .col-qtd {
+    width: fit-content;
+    padding: 4px 12px;
   }
 }
 
 @media (max-width: 500px) {
   .modal-overlay {
-    padding: 15px; 
+    padding: 15px;
   }
   .modal-content.dash-popup {
     padding: 16px;
@@ -810,7 +845,7 @@ input:focus {
     gap: 10px;
   }
   .modal-actions {
-    flex-direction: column; 
+    flex-direction: column;
     gap: 10px;
   }
 }
@@ -821,21 +856,17 @@ input:focus {
 .select-filtro {
   background-color: var(--input-bg);
   color: var(--text-main);
-  border: 1px solid #3b4252;
-  padding: 6px 32px 6px 12px; /* Espaço extra na direita para a seta */
+  border: 1px solid var(--border-color);
+  padding: 6px 32px 6px 12px;
   border-radius: 8px;
   font-size: 0.8rem;
   font-weight: 600;
   outline: none;
   cursor: pointer;
   transition: var(--transition);
-  
-  /* Remove o visual padrão feio do navegador */
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  
-  /* Seta customizada elegante feita em SVG */
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
@@ -848,10 +879,9 @@ input:focus {
 
 .select-filtro:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(0, 242, 255, 0.1); /* Brilho neon sutil igual aos inputs */
+  box-shadow: 0 0 0 3px rgba(0, 242, 255, 0.1);
 }
 
-/* Cor de fundo das opções na lista que se abre */
 .select-filtro option {
   background-color: var(--card-bg);
   color: var(--text-main);
@@ -879,41 +909,32 @@ input:focus {
   box-shadow: 0 0 10px rgba(0, 242, 255, 0.15);
   transform: translateY(-1px);
 }
-/* =========================================
-   ESTILIZAÇÃO DA SCROLLBAR (GLOBAL)
-========================================= */
 
 /* =========================================
-   SCROLLBAR CUSTOMIZADA (MAIS VISÍVEL)
+   SCROLLBAR CUSTOMIZADA
 ========================================= */
-
-/* 1. Área total da barra */
 ::-webkit-scrollbar {
-  width: 10px;               /* Um pouco mais larga para facilitar o clique */
+  width: 10px;
   height: 10px;
 }
 
-/* 2. O trilho (fundo da barra) */
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.03); /* Um leve reflexo para saber onde a barra está */
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 10px;
 }
 
-/* 3. O pegador (Thumb) - Cor visível */
 ::-webkit-scrollbar-thumb {
-  background: #4c566a;       /* Um cinza médio (estilo Nord "Polar Night") */
+  background: #4c566a;
   border-radius: 10px;
-  border: 2px solid #242933; /* Espaço para não encostar nas bordas */
+  border: 2px solid #242933;
   transition: all 0.3s ease;
 }
 
-/* 4. Hover - Destaque total */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent); /* O seu Ciano #00f2ff */
-  box-shadow: 0 0 10px var(--accent); /* Leve brilho neon */
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
 }
 
-/* Ajuste para Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: #4c566a transparent;

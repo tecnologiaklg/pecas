@@ -1,0 +1,82 @@
+.root {
+  width: 100%;
+  position: relative;
+}
+
+.input {
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  transition: var(--transition);
+  width: 100%;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 242, 255, 0.1);
+}
+
+.options {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  width: 100%;
+  background-color: var(--input-bg);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.option {
+  padding: 12px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  border-bottom: 1px solid var(--hairline);
+  transition: var(--transition);
+}
+
+.option:last-child {
+  border-bottom: none;
+}
+
+.option:hover {
+  background: var(--button-hover-bg);
+}
+
+.optionSelected {
+  background: rgba(0, 242, 255, 0.16);
+}
+
+.codigo {
+  color: var(--accent);
+  margin-right: 8px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.options::-webkit-scrollbar {
+  width: 5px;
+}
+
+.options::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+

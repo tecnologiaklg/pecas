@@ -1,0 +1,15 @@
+/* Estilos globais mínimos (mantém o app.css como fonte principal de layout) */
+
+.nome-vendedor {
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.no-data {
+  text-align: center;
+  color: var(--text-dim);
+  margin-top: 20px;
+  font-style: italic;
+}

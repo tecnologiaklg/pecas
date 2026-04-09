@@ -1,0 +1,52 @@
+/* Base global mínima (resets leves + layout do body + scrollbar). */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: 'Inter', -apple-system, sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 15px;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4c566a;
+  border-radius: 10px;
+  border: 2px solid #242933;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4c566a transparent;
+}
+
+@media (max-width: 650px) {
+  body {
+    overflow-y: auto;
+    height: auto;
+  }
+}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../supabaseClient";
+import styles from "./MiniDashPopup.module.css";
 
 export default function MiniDashPopup({ onClose, vendedoresLista }) {
   const [activeTab, setActiveTab] = useState("resumo");
@@ -67,17 +68,17 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content dash-popup">
-        <div className="dash-header">
+    <div className={styles.overlay}>
+      <div className={`${styles.modal} ${styles.dashPopup}`}>
+        <div className={styles.dashHeader}>
           <h3>Mini Dash - Últimos 90 dias</h3>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <div className={styles.headerRight}>
             {activeTab === "itens" && (
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <div className={styles.headerFilters}>
                 {/* Botão de Ordenação */}
                 <button 
-                className="btn-filter" 
+                className={styles.btnFilter}
                 onClick={() => setOrdemData(ordemData === "desc" ? "asc" : "desc")}
                 title="Inverter Ordem"
                 >
@@ -85,7 +86,7 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
                 </button>
 
                 <select 
-                className="select-filtro"
+                className={styles.selectFiltro}
                 value={filtroVendedorDash}
                 onChange={(e) => setFiltroVendedorDash(e.target.value)}
                 >
@@ -96,38 +97,48 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
                 </select>
             </div>
             )}
-            <button className="btn-close" onClick={onClose}>×</button>
+            <button className={styles.btnClose} onClick={onClose}>×</button>
           </div>
         </div>
 
-        <div className="dash-tabs">
-          <button className={activeTab === "resumo" ? "active" : ""} onClick={() => setActiveTab("resumo")}>Resumo</button>
-          <button className={activeTab === "itens" ? "active" : ""} onClick={() => setActiveTab("itens")}>Itens Faltantes</button>
+        <div className={styles.dashTabs}>
+          <button
+            className={`${styles.tabBtn} ${activeTab === "resumo" ? styles.tabBtnActive : ""}`}
+            onClick={() => setActiveTab("resumo")}
+          >
+            Resumo
+          </button>
+          <button
+            className={`${styles.tabBtn} ${activeTab === "itens" ? styles.tabBtnActive : ""}`}
+            onClick={() => setActiveTab("itens")}
+          >
+            Itens Faltantes
+          </button>
         </div>
 
-        <div className="dash-body">
+        <div className={styles.dashBody}>
           {loadingDash ? (
-            <div className="loading-container"><p>Carregando dados do Supabase...</p></div>
+            <div className={styles.loadingContainer}><p>Carregando dados do Supabase...</p></div>
           ) : activeTab === "resumo" ? (
-            <div className="resumo-tab">
-              <div className="resumo-header-cards">
+            <div className={styles.resumoTab}>
+              <div>
                 <p><strong>Total de Atendimentos:</strong> {dashData.totalAtendimentos}</p>
               </div>
               <h4>Ranking por Vendedor:</h4>
-              <div className="lista-vendedores-dash">
+              <div className={styles.listaVendedores}>
                 {dashData.porVendedor
                   .sort((a, b) => b.pecas - a.pecas)
                   .map((vendedorObj, idx) => (
-                    <div key={idx} className="item-card-dash vendedor-stats">
-                      <span className="nome-vendedor">{vendedorObj.nome}</span>
-                      <div className="vendedor-metrias">
-                        <div className="badge badge-atend">
-                          <span className="badge-icon">📞 Atendimentos: </span>
-                          <span className="badge-value">{vendedorObj.atendimentos} </span>
+                    <div key={idx} className={styles.cardDash}>
+                      <span className={styles.nomeVendedor}>{vendedorObj.nome}</span>
+                      <div className={styles.vendedorMetrias}>
+                        <div className={styles.badge}>
+                          <span>📞 Atendimentos: </span>
+                          <span className={styles.badgeValue}>{vendedorObj.atendimentos} </span>
                         </div>
-                        <div className="badge badge-pecas">
-                          <span className="badge-icon">⚙️ Peças: </span>
-                          <span className="badge-value">{vendedorObj.pecas}</span>
+                        <div className={styles.badge}>
+                          <span>⚙️ Peças: </span>
+                          <span className={styles.badgeValue}>{vendedorObj.pecas}</span>
                         </div>
                       </div>
                     </div>
@@ -135,12 +146,12 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
               </div>
             </div>
           ) : (
-            <div className="itens-tab">
+            <div className={styles.itensTab}>
               <h4>Itens Faltantes (Últimos 90 dias)</h4>
-              <div className="grid-header">
+              <div className={styles.gridHeader}>
                 <span>DATA</span><span>COD</span><span>DESCRIÇÃO</span><span>CLIENTE</span><span>VENDEDOR</span><span style={{ textAlign: 'center' }}>QTD</span>
               </div>
-              <div className="lista-itens-dash">
+              <div className={styles.listaItensDash}>
                 {ultimosItens.length > 0 ? (
                   ultimosItens
                     .filter(item => filtroVendedorDash === "" || item.conversas.vendedor === filtroVendedorDash)
@@ -155,17 +166,17 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
                     }
                   })
                     .map((item, i) => (
-                      <div key={i} className="item-card-dash grid-layout">
-                        <span className="col-data">{formatarData(item.conversas.dt_inclusao)}</span>
-                        <span className="col-cod">{item.cod_prod || "---"}</span>
-                        <span className="col-desc">{item.descricao}</span>
-                        <span className="col-cliente">{item.conversas.codparceiro || "---"}</span>
-                        <span className="col-vendedor">{item.conversas.vendedor}</span>
-                        <span className="col-qtd">{item.quantidade}x</span>
+                      <div key={i} className={styles.gridRow}>
+                        <span className={styles.colData}>{formatarData(item.conversas.dt_inclusao)}</span>
+                        <span className={styles.colCod}>{item.cod_prod || "---"}</span>
+                        <span className={styles.colDesc}>{item.descricao}</span>
+                        <span className={styles.colCliente}>{item.conversas.codparceiro || "---"}</span>
+                        <span className={styles.colVendedor}>{item.conversas.vendedor}</span>
+                        <span className={styles.colQtd}>{item.quantidade}x</span>
                       </div>
                     ))
                 ) : (
-                  <p className="no-data">Nenhum item registrado.</p>
+                  <p className={styles.noData}>Nenhum item registrado.</p>
                 )}
               </div>
             </div>

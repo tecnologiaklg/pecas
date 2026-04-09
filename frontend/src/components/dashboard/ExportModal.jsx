@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../supabaseClient";
+import styles from "./ExportModal.module.css";
 
 export default function ExportModal({ onClose }) {
   const [dataInicio, setDataInicio] = useState(new Date().toISOString().split('T')[0]);
@@ -53,11 +54,11 @@ export default function ExportModal({ onClose }) {
   }
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <h3>Exportar Relatório</h3>
+    <div className={styles.overlay}>
+      <div className={styles.modal}>
+        <h3 className={styles.titulo}>Exportar Relatório</h3>
         
-        <div className="modal-inputs">
+        <div className={styles.inputs}>
           <label>
             Data Inicial
             <input type="date" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)} />
@@ -69,11 +70,11 @@ export default function ExportModal({ onClose }) {
           </label>
         </div>
 
-        <div className="modal-actions">
-          <button className="btn-cancelar" onClick={onClose}>
+        <div className={styles.actions}>
+          <button className={styles.btnCancelar} onClick={onClose}>
             CANCELAR
           </button>
-          <button className="btn-baixar" onClick={exportarPlanilha} disabled={loading}>
+          <button className={styles.btnBaixar} onClick={exportarPlanilha} disabled={loading}>
             {loading ? "GERANDO..." : "BAIXAR CSV"}
           </button>
         </div>
