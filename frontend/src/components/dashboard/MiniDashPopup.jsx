@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../../supabaseClient";
+import { supabaseService } from "../../services/supabaseService";
 import styles from "./MiniDashPopup.module.css";
 
-export default function MiniDashPopup({ onClose, vendedoresLista }) {
+export function MiniDashPopup({ onClose, vendedoresLista }) {
   const [activeTab, setActiveTab] = useState("resumo");
   const [filtroVendedorDash, setFiltroVendedorDash] = useState("");
   const [loadingDash, setLoadingDash] = useState(true);
   const [dashData, setDashData] = useState({ totalAtendimentos: 0, porVendedor: [] });
   const [ultimosItens, setUltimosItens] = useState([]);
   const [ordemData, setOrdemData] = useState("desc");
-    const formatarData = (isoString) => {
+
+  const formatarData = (isoString) => {
     if (!isoString) return "--/--";
     return new Date(isoString).toLocaleDateString("pt-BR");
-    };
-  // Busca os dados assim que o componente aparecer na tela
+  };
+
   useEffect(() => {
     carregarDash();
   }, []);
@@ -21,16 +22,7 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
   async function carregarDash() {
     setLoadingDash(true);
     try {
-      const trintaDias = new Date();
-      trintaDias.setDate(trintaDias.getDate() - 90);
-      const dataBusca = trintaDias.toISOString();
-
-      const { data: itensData, error: errItens } = await supabase
-        .from('itens_faltantes')
-        .select(`quantidade, descricao, cod_prod, conversas!inner (vendedor, dt_inclusao, codparceiro, cliente)`)
-        .gte('conversas.dt_inclusao', dataBusca);
-
-      if (errItens) throw errItens;
+      const itensData = await supabaseService.buscarDadosDashboard();
 
       const statsVendedores = itensData.reduce((acc, item) => {
         const nome = item.conversas.vendedor;
@@ -147,7 +139,7 @@ export default function MiniDashPopup({ onClose, vendedoresLista }) {
             </div>
           ) : (
             <div className={styles.itensTab}>
-              <h4>Itens Faltantes</h4>
+              <h4>Itens Faltantes </h4>
               <div className={styles.gridHeader}>
                 <span>DATA</span><span>COD</span><span>DESCRIÇÃO</span><span>CLIENTE</span><span>VENDEDOR</span><span style={{ textAlign: 'center' }}>QTD</span>
               </div>
