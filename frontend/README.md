@@ -2,7 +2,7 @@
 
 Este é um aplicativo frontend desenvolvido em **React** com **Vite**. O objetivo principal da aplicação é servir como uma ferramenta interna para o registro de "Peças Faltantes" atreladas a conversas/atendimentos. 
 
-Através de uma interface limpa, o usuário pode selecionar o funcionário (vendedor), preencher os dados do cliente e do contato, colar o link de um atendimento (ex: plataforma Zapp) e listar os itens/peças que estão em falta. Ao publicar, os dados são salvos em um banco de dados **Supabase**.
+Através de uma interface limpa, o usuário pode selecionar o funcionário (vendedor), preencher os dados do cliente e do contato, colar o link de um atendimento (ex: plataforma Zappy) e listar os itens/peças que estão em falta. Ao publicar, os dados são salvos em um banco de dados **Supabase**.
 
 ---
 

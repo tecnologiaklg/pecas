@@ -49,7 +49,7 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
           acc[nome] = { atendimentosIds: new Set(), totalPeças: 0 };
         }
 
-        acc[nome].atendimentosIds.add(conversaId); 
+        acc[nome].atendimentosIds.add(conversaId);
         acc[nome].totalPeças += parseInt(item.quantidade || 0);
         return acc;
       }, {});
@@ -60,10 +60,10 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
         pecas: dados.totalPeças
       }));
 
-      setDashData({ 
-        totalAtendimentos: new Set(itensData.map(i => i.conversas.dt_inclusao)).size, 
+      setDashData({
+        totalAtendimentos: new Set(itensData.map(i => i.conversas.dt_inclusao)).size,
         totalPecas: listaVendedores.reduce((acc, obj) => acc + obj.pecas, 0),
-        porVendedor: listaVendedores 
+        porVendedor: listaVendedores
       });
       setUltimosItens(itensData);
     } catch (error) {
@@ -74,7 +74,7 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
   }
 
   const alternarOrdemData = () => {
-  setOrdemData(ordemAtual => ordemAtual === 'desc' ? 'asc' : 'desc');
+    setOrdemData(ordemAtual => ordemAtual === 'desc' ? 'asc' : 'desc');
   };
 
   return (
@@ -82,9 +82,9 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
       <div className={`${styles.modal} ${styles.dashPopup}`}>
         <div className={styles.dashHeader}>
           <div className={styles.headerLeft}>
-            <h3>Mini Dash</h3>
-            <select 
-              className={styles.selectPeriodo} 
+            <h3>Dash</h3>
+            <select
+              className={styles.selectPeriodo}
               value={periodoDias}
               onChange={(e) => setPeriodoDias(Number(e.target.value))}
             >
@@ -96,8 +96,16 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
               <option value={365}>Último ano</option>
             </select>
           </div>
-          
+
           <div className={styles.headerRight}>
+            <button
+              className={styles.btnReload}
+              onClick={carregarDash}
+              title="Recarregar Dados"
+              disabled={loadingDash}
+            >
+              🔄
+            </button>
             <button className={styles.btnClose} onClick={onClose}>×</button>
           </div>
         </div>
@@ -122,7 +130,7 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
             <div className={styles.loadingContainer}><p>Carregando dados do Supabase...</p></div>
           ) : activeTab === "resumo" ? (
             <div className={styles.resumoTab}>
-              
+
               <div className={styles.heroCards}>
                 <div className={styles.heroCard}>
                   <div className={styles.heroIcon}>📞</div>
@@ -145,8 +153,8 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
                   <div className={styles.heroInfo}>
                     <span className={styles.heroLabel}>Top Vendedor(a)</span>
                     <strong className={styles.heroValue}>
-                      {dashData.porVendedor.length > 0 
-                        ? dashData.porVendedor.sort((a, b) => b.pecas - a.pecas)[0].nome 
+                      {dashData.porVendedor.length > 0
+                        ? dashData.porVendedor.sort((a, b) => b.pecas - a.pecas)[0].nome
                         : "---"}
                     </strong>
                   </div>
@@ -159,9 +167,9 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
                   .sort((a, b) => b.pecas - a.pecas)
                   .map((vendedorObj, idx) => {
                     const arrayOrdenado = dashData.porVendedor.sort((a, b) => b.pecas - a.pecas);
-                    const maiorPecas = arrayOrdenado.length > 0 ? arrayOrdenado[0].pecas : 1; 
+                    const maiorPecas = arrayOrdenado.length > 0 ? arrayOrdenado[0].pecas : 1;
                     const progresso = (vendedorObj.pecas / maiorPecas) * 100;
-                    
+
                     let medalha = '';
                     if (idx === 0) medalha = '🥇';
                     else if (idx === 1) medalha = '🥈';
@@ -174,7 +182,7 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
                           <div className={styles.rankMedal}>{medalha}</div>
                           <span className={styles.nomeVendedor}>{vendedorObj.nome}</span>
                         </div>
-                        
+
                         <div className={styles.rankBarContainer}>
                           <div className={styles.rankBarFill} style={{ width: `${progresso}%` }}></div>
                         </div>
@@ -218,7 +226,7 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
                     onChange={(e) => setFiltroNomePeca(e.target.value.toUpperCase())}
                   />
                 </div>
-                
+
                 <div className={styles.filterGroup}>
                   <label className={styles.filterLabel}>BUSCAR POR CLIENTE</label>
                   <input
@@ -232,7 +240,7 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
 
                 <div className={styles.filterGroup}>
                   <label className={styles.filterLabel}>VENDEDOR</label>
-                  <select 
+                  <select
                     className={styles.selectFiltroPremium}
                     value={filtroVendedorDash}
                     onChange={(e) => setFiltroVendedorDash(e.target.value)}
@@ -246,7 +254,7 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
 
                 <div className={styles.filterGroup} style={{ flex: '0 1 auto' }}>
                   <label className={styles.filterLabel}>ORDENAÇÃO</label>
-                  <button 
+                  <button
                     className={styles.btnFilterPremium}
                     onClick={() => setOrdemData(ordemData === "desc" ? "asc" : "desc")}
                     title="Inverter Ordem"
@@ -267,15 +275,15 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
                     .filter(item => filtroNomePeca === "" || (item.descricao && item.descricao.toUpperCase().includes(filtroNomePeca)))
                     .filter(item => filtroCliente === "" || (item.conversas.codparceiro && String(item.conversas.codparceiro).includes(filtroCliente)))
                     .sort((a, b) => {
-                    const dataA = new Date(a.conversas.dt_inclusao).getTime();
-                    const dataB = new Date(b.conversas.dt_inclusao).getTime();
+                      const dataA = new Date(a.conversas.dt_inclusao).getTime();
+                      const dataB = new Date(b.conversas.dt_inclusao).getTime();
 
-                    if (ordemData === 'desc') {
-                      return dataB - dataA; // Mais novos primeiro
-                    } else {
-                      return dataA - dataB; // Mais antigos primeiro
-                    }
-                  })
+                      if (ordemData === 'desc') {
+                        return dataB - dataA; // Mais novos primeiro
+                      } else {
+                        return dataA - dataB; // Mais antigos primeiro
+                      }
+                    })
                     .map((item, i) => (
                       <div key={i} className={styles.gridRow}>
                         <span className={styles.colData}>{formatarData(item.conversas.dt_inclusao)}</span>

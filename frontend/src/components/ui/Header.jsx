@@ -15,7 +15,7 @@ export function Header({ setShowDashPopup, setShowExportModal }) {
             {theme === "light" ? "🌙 Escuro" : "☀️ Claro"}
           </button>
           <button className={styles.btn} onClick={() => setShowDashPopup(true)}>
-            📊 Mini Dash
+            📊 Dash
           </button>
           <button className={styles.btn} onClick={() => setShowExportModal(true)}>
             📊 Exportar
