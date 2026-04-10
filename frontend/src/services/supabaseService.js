@@ -1,11 +1,11 @@
 import { supabase } from "../supabaseClient";
 
 export const supabaseService = {
-  // Busca as métricas para o Dashboard (últimos 90 dias)
-  buscarDadosDashboard: async () => {
-    const trintaDias = new Date();
-    trintaDias.setDate(trintaDias.getDate() - 90);
-    const dataBusca = trintaDias.toISOString();
+  // Busca as métricas para o Dashboard (variável)
+  buscarDadosDashboard: async (dias = 90) => {
+    const dataAlvo = new Date();
+    dataAlvo.setDate(dataAlvo.getDate() - dias);
+    const dataBusca = dataAlvo.toISOString();
 
     const { data: itensData, error: errItens } = await supabase
       .from('itens_faltantes')

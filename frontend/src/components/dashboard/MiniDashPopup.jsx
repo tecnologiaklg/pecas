@@ -4,7 +4,11 @@ import styles from "./MiniDashPopup.module.css";
 
 export function MiniDashPopup({ onClose, vendedoresLista }) {
   const [activeTab, setActiveTab] = useState("resumo");
+  const [periodoDias, setPeriodoDias] = useState(90);
   const [filtroVendedorDash, setFiltroVendedorDash] = useState("");
+  const [filtroCodProduto, setFiltroCodProduto] = useState("");
+  const [filtroNomePeca, setFiltroNomePeca] = useState("");
+  const [filtroCliente, setFiltroCliente] = useState("");
   const [loadingDash, setLoadingDash] = useState(true);
   const [dashData, setDashData] = useState({ totalAtendimentos: 0, porVendedor: [] });
   const [ultimosItens, setUltimosItens] = useState([]);
@@ -17,12 +21,12 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
 
   useEffect(() => {
     carregarDash();
-  }, []);
+  }, [periodoDias]);
 
   async function carregarDash() {
     setLoadingDash(true);
     try {
-      const itensData = await supabaseService.buscarDadosDashboard();
+      const itensData = await supabaseService.buscarDadosDashboard(periodoDias);
 
       const statsVendedores = itensData.reduce((acc, item) => {
         const nome = item.conversas.vendedor;
@@ -63,32 +67,23 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
     <div className={styles.overlay}>
       <div className={`${styles.modal} ${styles.dashPopup}`}>
         <div className={styles.dashHeader}>
-          <h3>Mini Dash - Últimos 90 dias</h3>
+          <div className={styles.headerLeft}>
+            <h3>Mini Dash</h3>
+            <select 
+              className={styles.selectPeriodo} 
+              value={periodoDias}
+              onChange={(e) => setPeriodoDias(Number(e.target.value))}
+            >
+              <option value={7}>Últimos 7 dias</option>
+              <option value={15}>Últimos 15 dias</option>
+              <option value={30}>Últimos 30 dias</option>
+              <option value={90}>Últimos 3 meses</option>
+              <option value={180}>Últimos 6 meses</option>
+              <option value={365}>Último ano</option>
+            </select>
+          </div>
           
           <div className={styles.headerRight}>
-            {activeTab === "itens" && (
-            <div className={styles.headerFilters}>
-                {/* Botão de Ordenação */}
-                <button 
-                className={styles.btnFilter}
-                onClick={() => setOrdemData(ordemData === "desc" ? "asc" : "desc")}
-                title="Inverter Ordem"
-                >
-                {ordemData === "desc" ? "📅 Mais Novos" : "📅 Mais Antigos"}
-                </button>
-
-                <select 
-                className={styles.selectFiltro}
-                value={filtroVendedorDash}
-                onChange={(e) => setFiltroVendedorDash(e.target.value)}
-                >
-                <option value="">Todos os Vendedores</option>
-                {vendedoresLista.map(v => (
-                    <option key={v.codigo} value={v.nome}>{v.nome}</option>
-                ))}
-                </select>
-            </div>
-            )}
             <button className={styles.btnClose} onClick={onClose}>×</button>
           </div>
         </div>
@@ -139,7 +134,66 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
             </div>
           ) : (
             <div className={styles.itensTab}>
-              <h4>Itens Faltantes </h4>
+              <div className={styles.filterBarPremium}>
+                <div className={styles.filterGroup}>
+                  <label className={styles.filterLabel}>BUSCAR POR CÓDIGO</label>
+                  <input
+                    type="text"
+                    className={styles.inputFiltroPremium}
+                    placeholder="Ex: 54321..."
+                    value={filtroCodProduto}
+                    onChange={(e) => setFiltroCodProduto(e.target.value.toUpperCase())}
+                  />
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label className={styles.filterLabel}>BUSCAR POR PEÇA</label>
+                  <input
+                    type="text"
+                    className={styles.inputFiltroPremium}
+                    placeholder="Nome da peça..."
+                    value={filtroNomePeca}
+                    onChange={(e) => setFiltroNomePeca(e.target.value.toUpperCase())}
+                  />
+                </div>
+                
+                <div className={styles.filterGroup}>
+                  <label className={styles.filterLabel}>BUSCAR POR CLIENTE</label>
+                  <input
+                    type="text"
+                    className={styles.inputFiltroPremium}
+                    placeholder="Cód ou Nome..."
+                    value={filtroCliente}
+                    onChange={(e) => setFiltroCliente(e.target.value.toUpperCase())}
+                  />
+                </div>
+
+                <div className={styles.filterGroup}>
+                  <label className={styles.filterLabel}>VENDEDOR</label>
+                  <select 
+                    className={styles.selectFiltroPremium}
+                    value={filtroVendedorDash}
+                    onChange={(e) => setFiltroVendedorDash(e.target.value)}
+                  >
+                    <option value="">Todos os Vendedores</option>
+                    {vendedoresLista.map(v => (
+                      <option key={v.codigo} value={v.nome}>{v.nome}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className={styles.filterGroup} style={{ flex: '0 1 auto' }}>
+                  <label className={styles.filterLabel}>ORDENAÇÃO</label>
+                  <button 
+                    className={styles.btnFilterPremium}
+                    onClick={() => setOrdemData(ordemData === "desc" ? "asc" : "desc")}
+                    title="Inverter Ordem"
+                  >
+                    {ordemData === "desc" ? "🔻 MAIS NOVOS" : "🔺 MAIS ANTIGOS"}
+                  </button>
+                </div>
+              </div>
+
               <div className={styles.gridHeader}>
                 <span>DATA</span><span>COD</span><span>DESCRIÇÃO</span><span>CLIENTE</span><span>VENDEDOR</span><span style={{ textAlign: 'center' }}>QTD</span>
               </div>
@@ -147,6 +201,9 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
                 {ultimosItens.length > 0 ? (
                   ultimosItens
                     .filter(item => filtroVendedorDash === "" || item.conversas.vendedor === filtroVendedorDash)
+                    .filter(item => filtroCodProduto === "" || (item.cod_prod && String(item.cod_prod).includes(filtroCodProduto)))
+                    .filter(item => filtroNomePeca === "" || (item.descricao && item.descricao.toUpperCase().includes(filtroNomePeca)))
+                    .filter(item => filtroCliente === "" || (item.conversas.codparceiro && String(item.conversas.codparceiro).includes(filtroCliente)))
                     .sort((a, b) => {
                     const dataA = new Date(a.conversas.dt_inclusao).getTime();
                     const dataB = new Date(b.conversas.dt_inclusao).getTime();
