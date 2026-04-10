@@ -3,16 +3,29 @@ import { supabaseService } from "../../services/supabaseService";
 import styles from "./MiniDashPopup.module.css";
 
 export function MiniDashPopup({ onClose, vendedoresLista }) {
-  const [activeTab, setActiveTab] = useState("resumo");
-  const [periodoDias, setPeriodoDias] = useState(90);
-  const [filtroVendedorDash, setFiltroVendedorDash] = useState("");
-  const [filtroCodProduto, setFiltroCodProduto] = useState("");
-  const [filtroNomePeca, setFiltroNomePeca] = useState("");
-  const [filtroCliente, setFiltroCliente] = useState("");
+  const [activeTab, setActiveTab] = useState(() => localStorage.getItem("dashPref_activeTab") || "resumo");
+  const [periodoDias, setPeriodoDias] = useState(() => {
+    const saved = localStorage.getItem("dashPref_periodoDias");
+    return saved ? Number(saved) : 90;
+  });
+  const [filtroVendedorDash, setFiltroVendedorDash] = useState(() => localStorage.getItem("dashPref_filtroVendedorDash") || "");
+  const [filtroCodProduto, setFiltroCodProduto] = useState(() => localStorage.getItem("dashPref_filtroCodProduto") || "");
+  const [filtroNomePeca, setFiltroNomePeca] = useState(() => localStorage.getItem("dashPref_filtroNomePeca") || "");
+  const [filtroCliente, setFiltroCliente] = useState(() => localStorage.getItem("dashPref_filtroCliente") || "");
   const [loadingDash, setLoadingDash] = useState(true);
   const [dashData, setDashData] = useState({ totalAtendimentos: 0, porVendedor: [] });
   const [ultimosItens, setUltimosItens] = useState([]);
-  const [ordemData, setOrdemData] = useState("desc");
+  const [ordemData, setOrdemData] = useState(() => localStorage.getItem("dashPref_ordemData") || "desc");
+
+  useEffect(() => {
+    localStorage.setItem("dashPref_activeTab", activeTab);
+    localStorage.setItem("dashPref_periodoDias", periodoDias);
+    localStorage.setItem("dashPref_filtroVendedorDash", filtroVendedorDash);
+    localStorage.setItem("dashPref_filtroCodProduto", filtroCodProduto);
+    localStorage.setItem("dashPref_filtroNomePeca", filtroNomePeca);
+    localStorage.setItem("dashPref_filtroCliente", filtroCliente);
+    localStorage.setItem("dashPref_ordemData", ordemData);
+  }, [activeTab, periodoDias, filtroVendedorDash, filtroCodProduto, filtroNomePeca, filtroCliente, ordemData]);
 
   const formatarData = (isoString) => {
     if (!isoString) return "--/--";

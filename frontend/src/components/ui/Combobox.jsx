@@ -11,8 +11,12 @@ export default function Combobox({ value, onChange, lista }) {
   const itemsRef = useRef([]); // Referência para os itens <li>
 
   useEffect(() => {
-    setFiltro(value || "");
-  }, [value]);
+    if (!open) {
+      setFiltro(value || "");
+    } else if (value && filtro === "") {
+      setFiltro(value);
+    }
+  }, [value, open]);
 
   const resultados = lista.filter(v =>
     v.codigo.startsWith(filtro) || v.nome.toLowerCase().startsWith(filtro.toLowerCase())
@@ -75,7 +79,19 @@ export default function Combobox({ value, onChange, lista }) {
         }}
         onFocus={() => setOpen(true)}
         onBlur={() => {
-          setTimeout(() => setOpen(false), 200);
+          setTimeout(() => {
+            if (open && filtro) {
+              const exactMatch = lista.find(v => 
+                v.codigo.toLowerCase() === filtro.toLowerCase() || 
+                v.nome.toLowerCase() === filtro.toLowerCase()
+              );
+              if (exactMatch) {
+                selecionar(exactMatch);
+                return;
+              }
+            }
+            setOpen(false);
+          }, 200);
         }}
       />
       
