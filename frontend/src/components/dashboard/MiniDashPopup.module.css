@@ -429,6 +429,153 @@
 }
 
 /* =========================================
+   ESTILOS PREMIUM (RESUMO DASHBOARD)
+========================================= */
+
+.heroCards {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .heroCards {
+    flex-direction: column;
+  }
+}
+
+.heroCard {
+  flex: 1;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  padding: 16px 20px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: transform 0.2s;
+  min-width: 190px;
+}
+
+.heroCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.heroIcon {
+  font-size: 1.8rem;
+  background: var(--card-bg);
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.heroLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.heroValue {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+/* Ranking Cards */
+.cardDashPremium {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 14px 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.cardDashPremium:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 15px rgba(0, 242, 255, 0.05);
+  transform: scale(1.01);
+}
+
+.dashRankMetrica {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 160px;
+}
+
+.rankMedal {
+  font-size: 1.2rem;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rankNum {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  background: var(--input-bg);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.rankBarContainer {
+  flex: 1;
+  height: 8px;
+  background: var(--input-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  margin: 0 15px;
+}
+
+@media (max-width: 700px) {
+  .rankBarContainer {
+    display: none; /* Esconde barras em cel pequeno */
+  }
+}
+
+.rankBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent) 0%, rgba(0, 242, 255, 0.6) 100%);
+  border-radius: 8px;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.badgePremium {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+/* =========================================
    ESTILOS (BARRA DE FILTROS MINIMALISTA)
 ========================================= */
 .filterBarPremium {

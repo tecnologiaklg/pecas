@@ -49,6 +49,7 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
 
       setDashData({ 
         totalAtendimentos: new Set(itensData.map(i => i.conversas.dt_inclusao)).size, 
+        totalPecas: listaVendedores.reduce((acc, obj) => acc + obj.pecas, 0),
         porVendedor: listaVendedores 
       });
       setUltimosItens(itensData);
@@ -108,28 +109,76 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
             <div className={styles.loadingContainer}><p>Carregando dados do Supabase...</p></div>
           ) : activeTab === "resumo" ? (
             <div className={styles.resumoTab}>
-              <div>
-                <p><strong>Total de Atendimentos:</strong> {dashData.totalAtendimentos}</p>
+              
+              <div className={styles.heroCards}>
+                <div className={styles.heroCard}>
+                  <div className={styles.heroIcon}>📞</div>
+                  <div className={styles.heroInfo}>
+                    <span className={styles.heroLabel}>Atendimentos Totais</span>
+                    <strong className={styles.heroValue}>{dashData.totalAtendimentos}</strong>
+                  </div>
+                </div>
+
+                <div className={styles.heroCard}>
+                  <div className={styles.heroIcon}>⚙️</div>
+                  <div className={styles.heroInfo}>
+                    <span className={styles.heroLabel}>Peças Requisitadas</span>
+                    <strong className={styles.heroValue}>{dashData.totalPecas || 0}</strong>
+                  </div>
+                </div>
+
+                <div className={styles.heroCard} style={{ borderColor: 'var(--accent)', background: 'rgba(0, 242, 255, 0.05)' }}>
+                  <div className={styles.heroIcon}>🥇</div>
+                  <div className={styles.heroInfo}>
+                    <span className={styles.heroLabel}>Top Vendedor(a)</span>
+                    <strong className={styles.heroValue}>
+                      {dashData.porVendedor.length > 0 
+                        ? dashData.porVendedor.sort((a, b) => b.pecas - a.pecas)[0].nome 
+                        : "---"}
+                    </strong>
+                  </div>
+                </div>
               </div>
-              <h4>Ranking por Vendedor:</h4>
+
+              <h4>Ranking Geral</h4>
               <div className={styles.listaVendedores}>
                 {dashData.porVendedor
                   .sort((a, b) => b.pecas - a.pecas)
-                  .map((vendedorObj, idx) => (
-                    <div key={idx} className={styles.cardDash}>
-                      <span className={styles.nomeVendedor}>{vendedorObj.nome}</span>
-                      <div className={styles.vendedorMetrias}>
-                        <div className={styles.badge}>
-                          <span>📞 Atendimentos: </span>
-                          <span className={styles.badgeValue}>{vendedorObj.atendimentos} </span>
+                  .map((vendedorObj, idx) => {
+                    const arrayOrdenado = dashData.porVendedor.sort((a, b) => b.pecas - a.pecas);
+                    const maiorPecas = arrayOrdenado.length > 0 ? arrayOrdenado[0].pecas : 1; 
+                    const progresso = (vendedorObj.pecas / maiorPecas) * 100;
+                    
+                    let medalha = '';
+                    if (idx === 0) medalha = '🥇';
+                    else if (idx === 1) medalha = '🥈';
+                    else if (idx === 2) medalha = '🥉';
+                    else medalha = <span className={styles.rankNum}>#{idx + 1}</span>;
+
+                    return (
+                      <div key={idx} className={styles.cardDashPremium}>
+                        <div className={styles.dashRankMetrica}>
+                          <div className={styles.rankMedal}>{medalha}</div>
+                          <span className={styles.nomeVendedor}>{vendedorObj.nome}</span>
                         </div>
-                        <div className={styles.badge}>
-                          <span>⚙️ Peças: </span>
-                          <span className={styles.badgeValue}>{vendedorObj.pecas}</span>
+                        
+                        <div className={styles.rankBarContainer}>
+                          <div className={styles.rankBarFill} style={{ width: `${progresso}%` }}></div>
+                        </div>
+
+                        <div className={styles.vendedorMetrias}>
+                          <div className={styles.badgePremium}>
+                            <span>📞</span>
+                            <span className={styles.badgeValue}>{vendedorObj.atendimentos}</span>
+                          </div>
+                          <div className={styles.badgePremium} style={{ background: 'var(--accent)', color: '#000', borderColor: 'var(--accent)' }}>
+                            <span style={{ color: '#000' }}>⚙️</span>
+                            <span className={styles.badgeValue} style={{ color: '#000' }}>{vendedorObj.pecas}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  })}
               </div>
             </div>
           ) : (
