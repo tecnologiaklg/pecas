@@ -16,6 +16,14 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
   const [dashData, setDashData] = useState({ totalAtendimentos: 0, porVendedor: [] });
   const [ultimosItens, setUltimosItens] = useState([]);
   const [ordemData, setOrdemData] = useState(() => localStorage.getItem("dashPref_ordemData") || "desc");
+  const [analiseData, setAnaliseData] = useState({
+    tendenciaAtendimentos: 0,
+    tendenciaPecas: 0,
+    hotList: [],
+    clientesAfetados: [],
+    periodoAtual: "",
+    periodoAnterior: ""
+  });
 
   useEffect(() => {
     localStorage.setItem("dashPref_activeTab", activeTab);
@@ -39,9 +47,20 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
   async function carregarDash() {
     setLoadingDash(true);
     try {
-      const itensData = await supabaseService.buscarDadosDashboard(periodoDias);
+      // Busca dobro do período para cálculo de tendências (Bio-Temporal)
+      const todosItens = await supabaseService.buscarDadosDashboard(periodoDias * 2);
 
-      const statsVendedores = itensData.reduce((acc, item) => {
+      const agora = new Date();
+      const corte = new Date();
+      corte.setDate(agora.getDate() - periodoDias);
+      const dataCorte = corte.toISOString();
+
+      // Separação dos períodos
+      const itensAtuais = todosItens.filter(i => i.conversas.dt_inclusao >= dataCorte);
+      const itensAnteriores = todosItens.filter(i => i.conversas.dt_inclusao < dataCorte);
+
+      // 1. Processamento para aba Resumo (Período Atual)
+      const statsVendedores = itensAtuais.reduce((acc, item) => {
         const nome = item.conversas.vendedor;
         const conversaId = item.conversas.dt_inclusao + nome;
 
@@ -60,13 +79,70 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
         pecas: dados.totalPeças
       }));
 
+      const totalAtendAtuais = new Set(itensAtuais.map(i => i.conversas.dt_inclusao + i.conversas.vendedor)).size;
+      const totalPecasAtuais = listaVendedores.reduce((acc, obj) => acc + obj.pecas, 0);
+
       setDashData({
-        totalAtendimentos: new Set(itensData.map(i => i.conversas.dt_inclusao)).size,
-        totalPecas: listaVendedores.reduce((acc, obj) => acc + obj.pecas, 0),
+        totalAtendimentos: totalAtendAtuais,
+        totalPecas: totalPecasAtuais,
         porVendedor: listaVendedores
       });
-      setUltimosItens(itensData);
+      setUltimosItens(itensAtuais);
+
+      // 2. Processamento de Tendências (Análise de Impacto)
+      const totalAtendAnteriores = new Set(itensAnteriores.map(i => i.conversas.dt_inclusao + i.conversas.vendedor)).size;
+      const totalPecasAnteriores = itensAnteriores.reduce((acc, i) => acc + parseInt(i.quantidade || 0), 0);
+
+      const calcularTendencia = (atual, anterior) => {
+        if (anterior === 0) return atual > 0 ? 100 : 0;
+        return ((atual - anterior) / anterior) * 100;
+      };
+
+      // 3. Hot List (Top 5 Itens Faltantes)
+      const hotListMap = itensAtuais.reduce((acc, item) => {
+        const desc = item.descricao || "SEM DESCRIÇÃO";
+        acc[desc] = (acc[desc] || 0) + parseInt(item.quantidade || 0);
+        return acc;
+      }, {});
+
+      const hotList = Object.entries(hotListMap)
+        .map(([descricao, total]) => ({ descricao, total }))
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 5);
+
+      // 4. Clientes Mais Afetados
+      const clientesMap = itensAtuais.reduce((acc, item) => {
+        const key = item.conversas.codparceiro;
+        if (!key) return acc;
+
+        if (!acc[key]) acc[key] = { total: 0 };
+        acc[key].total += parseInt(item.quantidade || 0);
+        return acc;
+      }, {});
+
+      const clientesAfetados = Object.entries(clientesMap)
+        .map(([codigo, dados]) => ({ codigo, total: dados.total }))
+        .sort((a, b) => b.total - a.total)
+        .slice(0, 5);
+
+      const formatLocal = (d) => d.toLocaleDateString("pt-BR", { day: '2-digit', month: '2-digit' });
+      const periodoAtualStr = `${formatLocal(corte)} até ${formatLocal(agora)}`;
+
+      const inicioAnterior = new Date(corte);
+      inicioAnterior.setDate(inicioAnterior.getDate() - periodoDias);
+      const periodoAnteriorStr = `${formatLocal(inicioAnterior)} até ${formatLocal(corte)}`;
+
+      setAnaliseData({
+        tendenciaAtendimentos: calcularTendencia(totalAtendAtuais, totalAtendAnteriores),
+        tendenciaPecas: calcularTendencia(totalPecasAtuais, totalPecasAnteriores),
+        hotList,
+        clientesAfetados,
+        periodoAtual: periodoAtualStr,
+        periodoAnterior: periodoAnteriorStr
+      });
+
     } catch (error) {
+      console.error("Erro ao carregar dash:", error);
       alert("Erro ao carregar dash: " + error.message);
     } finally {
       setLoadingDash(false);
@@ -116,6 +192,12 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
             onClick={() => setActiveTab("resumo")}
           >
             Resumo
+          </button>
+          <button
+            className={`${styles.tabBtn} ${activeTab === "analise" ? styles.tabBtnActive : ""}`}
+            onClick={() => setActiveTab("analise")}
+          >
+            Análise de Impacto
           </button>
           <button
             className={`${styles.tabBtn} ${activeTab === "itens" ? styles.tabBtnActive : ""}`}
@@ -200,6 +282,58 @@ export function MiniDashPopup({ onClose, vendedoresLista }) {
                       </div>
                     )
                   })}
+              </div>
+            </div>
+          ) : activeTab === "analise" ? (
+            <div className={styles.analiseTab}>
+              <div className={styles.trendCards}>
+                <div className={`${styles.trendCard} ${analiseData.tendenciaPecas > 0 ? styles.trendBad : styles.trendGood}`}>
+                  <span className={styles.trendValue}>
+                    {analiseData.tendenciaPecas > 0 ? "+" : ""}{analiseData.tendenciaPecas.toFixed(1)}%
+                  </span>
+                  <div className={styles.trendInfo}>
+                    <span className={styles.trendLabel}>Tendência de Peças</span>
+                    <small className={styles.trendSub}>vs período anterior</small>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.analiseGrids}>
+                <div className={styles.analiseSection}>
+                  <h4>Top 5 itens mais pedidos que estão em falta</h4>
+                  <div className={styles.hotList}>
+                    {analiseData.hotList.length > 0 ? analiseData.hotList.map((item, idx) => {
+                      const max = analiseData.hotList[0].total;
+                      const percent = (item.total / max) * 100;
+                      return (
+                        <div key={idx} className={styles.hotListItem}>
+                          <div className={styles.hotListInfo}>
+                            <span>{item.descricao}</span>
+                            <strong>{item.total}x</strong>
+                          </div>
+                          <div className={styles.hotListBarContainer}>
+                            <div className={styles.hotListBarFill} style={{ width: `${percent}%` }}></div>
+                          </div>
+                        </div>
+                      )
+                    }) : <p className={styles.noDataText}>Nenhum dado disponível.</p>}
+                  </div>
+                </div>
+
+                <div className={styles.analiseSection}>
+                  <h4>👥 Clientes Mais Afetados</h4>
+                  <div className={styles.rankList}>
+                    {analiseData.clientesAfetados.length > 0 ? analiseData.clientesAfetados.map((cli, idx) => (
+                      <div key={idx} className={styles.rankListItem}>
+                        <div className={styles.rankListPos}>#{idx + 1}</div>
+                        <div className={styles.rankListData}>
+                          <span className={styles.rankListClient}>Cod: {cli.codigo}</span>
+                          <span className={styles.rankListTotal}>{cli.total} peças faltantes</span>
+                        </div>
+                      </div>
+                    )) : <p className={styles.noDataText}>Nenhum dado disponível.</p>}
+                  </div>
+                </div>
               </div>
             </div>
           ) : (

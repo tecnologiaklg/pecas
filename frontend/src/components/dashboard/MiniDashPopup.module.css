@@ -692,3 +692,223 @@
   background: var(--input-bg);
   border-color: var(--text-dim);
 }
+
+/* =========================================
+   ESTILOS (ABA ANÁLISE DE IMPACTO)
+========================================= */
+
+.analiseTab {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeIn 0.4s ease;
+}
+
+.trendCards {
+  display: flex;
+  gap: 15px;
+}
+
+.trendCard {
+  width: fit-content;
+  margin: 0 auto 15px auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 6px 14px;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.2s;
+}
+
+.trendCard:hover {
+  transform: scale(1.02);
+  border-color: var(--accent);
+}
+
+.trendValue {
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.trendGood .trendValue {
+  color: #10b981;
+}
+
+.trendBad .trendValue {
+  color: #ef4444;
+}
+
+.trendInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1;
+}
+
+.trendLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.trendSub {
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.analiseGrids {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 750px) {
+  .analiseGrids {
+    grid-template-columns: 1fr;
+  }
+  .trendCards {
+    flex-direction: column;
+  }
+}
+
+.analiseSection {
+  background: var(--input-bg);
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.analiseSection h4 {
+  margin: 0 0 15px 0;
+  font-size: 0.9rem;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hotList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hotListItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hotListInfo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.hotListBarContainer {
+  height: 6px;
+  background: var(--card-bg);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.hotListBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent) 0%, #00b4d8 100%);
+  border-radius: 4px;
+}
+
+.rankList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rankListItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: var(--card-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.rankListPos {
+  font-weight: 800;
+  color: var(--accent);
+  font-size: 0.9rem;
+  min-width: 25px;
+}
+
+.rankListData {
+  display: flex;
+  flex-direction: column;
+}
+
+.rankListClient {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: uppercase;
+}
+
+.rankListTotal {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+}
+
+.noDataText {
+  color: var(--text-dim);
+  font-style: italic;
+  font-size: 0.8rem;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.analiseHeader {
+  background: rgba(0, 242, 255, 0.03);
+  border: 1px solid var(--border-color);
+  padding: 15px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.periodoBadge {
+  font-size: 0.75rem;
+  color: var(--text-main);
+  background: var(--input-bg);
+  padding: 5px 12px;
+  border-radius: 20px;
+  width: fit-content;
+  border: 1px solid var(--hairline);
+}
+
+.periodoBadge small {
+  color: var(--text-dim);
+  margin: 0 5px;
+}
+
+.analiseIntro {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.trendDesc {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  margin: 5px 0;
+  line-height: 1.3;
+}
