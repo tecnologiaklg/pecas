@@ -12,7 +12,7 @@ export function Header({ setShowDashPopup, setShowExportModal }) {
         <h1 className={styles.titulo}>Peças Faltantes</h1>
         <div className={styles.acoesHeader}>
           <button className={styles.btn} onClick={toggleTheme} title="Alternar tema">
-            {theme === "light" ? "🌙 Escuro" : "☀️ Claro"}
+            {theme === "light" ? "🌙" : "☀️ Claro"}
           </button>
           <button className={styles.btn} onClick={() => setShowDashPopup(true)}>
             📊 Dash
